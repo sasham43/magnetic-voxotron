@@ -15,11 +15,11 @@
 
     <base href="/">
   </head>
-  <body>
-    <nav>
-      <a href="/cd">cd</a>
-      <a href="/spotify">spotify</a>
-      <a href="/npr">npr</a>
+  <body class="container">
+    <nav class="row" ng-controller="NavController as nc">
+      <a class="one-third column nav-link" href="/cd">cd</a>
+      <a class="one-third column nav-link" href="/spotify">spotify</a>
+      <a class="one-third column nav-link" href="/npr">npr</a>
     </nav>
     <h1>Welcome to the Marvelous, the Magnificent Magnetic Voxotron!</h1>
     <ng-view></ng-view>

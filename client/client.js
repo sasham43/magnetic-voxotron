@@ -45,3 +45,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', function($http
 angular.module('MagVoxApp').controller('CDController', ['$http', function($http){
   console.log('cd controller loaded.');
 }]);
+
+angular.module('MagVoxApp').controller('NavController', ['$http', function($http){
+  console.log('nav controller loaded.');
+}]);

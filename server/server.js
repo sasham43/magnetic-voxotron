@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var mongoose = require('mongoose');
 var path = require('path');
+var routes = require('./routes');
 
 var app = express();
 
@@ -14,9 +15,9 @@ var port = process.env.PORT || 3000;
 app.use(express.static('server/public'));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res){
-  res.sendFile(path.join(__dirname, '../server/public/views/index.html'));
-});
+app.get('/', routes.index);
+
+app.get('/*', routes.index);
 
 // start listening
 server.listen(port, function(){

@@ -5,3 +5,23 @@ body{
 h1{
   color: chartreuse;
 }
+
+.nav-link{
+  text-align: center;
+  /*height: 10vh;*/
+  font-size: 2em;
+  padding: .5em;
+}
+
+a:nth-child(1){
+  background-color: #992222;
+  color: #eeeeee;
+}
+a:nth-child(2){
+  background-color: #229922;
+  color: #eeeeee;
+}
+a:nth-child(3){
+  background-color: #222222;
+  color: #eeeeee;
+}
