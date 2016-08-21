@@ -1,0 +1,35 @@
+{
+  "name": "magnetic-voxotron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
+    "build": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sasham43/magnetic-voxotron.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sasham43/magnetic-voxotron/issues"
+  },
+  "homepage": "https://github.com/sasham43/magnetic-voxotron#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.9",
+    "skeleton-css": "^2.0.4",
+    "socket.io": "^1.4.8"
+  }
+}
