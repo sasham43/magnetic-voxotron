@@ -7,12 +7,21 @@
     <!-- Libraries -->
     <link rel="stylesheet" href="vendor/skeleton-css/css/skeleton.css" />
     <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/angular-route/angular-route.min.js"></script>
 
     <!-- Custom -->
     <link rel="stylesheet" href="styles/style.css" />
     <script src="scripts/client.min.js"></script>
+
+    <base href="/">
   </head>
-  <body ng-controller="IndexController as ic">
+  <body>
+    <nav>
+      <a href="/cd">cd</a>
+      <a href="/spotify">spotify</a>
+      <a href="/npr">npr</a>
+    </nav>
     <h1>Welcome to the Marvelous, the Magnificent Magnetic Voxotron!</h1>
+    <ng-view></ng-view>
   </body>
 </html>

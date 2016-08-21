@@ -7,6 +7,7 @@ module.exports = function(grunt){
         cwd: 'node_modules/',
         src: [
           'angular/angular.min.js',
+          'angular-route/angular-route.min.js',
           'skeleton-css/css/skeleton.css'
         ],
         dest: 'server/public/vendor'

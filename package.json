@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
     "express": "^4.14.0",
     "mongoose": "^4.5.9",
     "skeleton-css": "^2.0.4",
