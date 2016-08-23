@@ -7,7 +7,12 @@ var path = require('path');
 var passport = require('passport');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
+var mongoose = require('mongoose');
 var routes = require('./routes');
+var nprSDK = require('../node_modules/npr-one-sdk/dist/node/index').default;
+var npr = new nprSDK();
+npr.accessToken = "gPdaRkYhVQOhBum16aqoQidnRybIpgoFv2H9gjwl";
+exports.npr = npr;
 
 var app = express();
 
@@ -29,6 +34,18 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// database
+var mongoURI = 'mongodb://localhost/magnetic-voxotron';
+var mongoDB = mongoose.connect(mongoURI).connection;
+
+mongoDB.on('error', function(err){
+  console.log('Error connecting to database:', err);
+});
+
+mongoDB.once('open', function(){
+  console.log('Connected to database.');
+});
+
 // auth routes
 var auth = require('./modules/auth.js').router;
 var npr = require('./modules/npr.js');
@@ -43,4 +60,4 @@ app.get('/*', routes.index);
 // start listening
 server.listen(port, function(){
   console.log('Server listening on port ' + port + '...');
-})
+});
