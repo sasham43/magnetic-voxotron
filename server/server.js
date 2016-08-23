@@ -16,7 +16,6 @@ app.use(express.static('server/public'));
 app.use(bodyParser.json());
 
 app.get('/', routes.index);
-
 app.get('/*', routes.index);
 
 // start listening
