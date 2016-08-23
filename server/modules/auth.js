@@ -1,7 +1,6 @@
 var router = require('express').Router();
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
-var npr = require('../server.js').npr;
 var User = require('../models/userModel');
 
 var nprScope = [
@@ -21,17 +20,16 @@ passport.use('npr', new OAuth2Strategy({
   callbackURL: 'http://localhost:3000/auth/npr/callback'
 }, function(accessToken, refreshToken, profile, done){
   process.nextTick(function(){
-    // save token to db
-    User.findOneAndUpdate({},{npr_token: accessToken}, function(err, users){
+    // save access token
+    User.findOneAndUpdate({}, {npr_token: accessToken}, function(err, users){
       if(err){
-        console.log("error updating user npr token:", err);
+        console.log('Error saving npr token:', err);
       } else {
-        console.log('updating users npr token:', users);
-        console.log('npr._config', npr.accessToken);
-
-        return done(null, profile);
+        console.log('Saved npr token', users);
       }
     });
+
+    return done(null, profile);
   });
 }));
 

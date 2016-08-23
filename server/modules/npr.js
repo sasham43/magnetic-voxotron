@@ -1,36 +1,39 @@
 var router = require('express').Router();
 var request = require('request');
-var nprSDK = require('npr-one-sdk').default;
-var npr = require('../server.js').npr;
 var User = require('../models/userModel');
 
-npr.onAccessTokenChanged = function (newToken) {
-    console.log('Access token has changed! New token:', newToken);
-    // in production, replace console.log() with code to update your token in memory/localStorage/wherever
-};
-
-var nprPlay = function(recommendation){
-  recommendation.recordAction(npr.Action.START, 0);
-
-  var audio = recommendation.getAudio()[0];
-  console.log('audio:', audio);
-}
+var accessToken = '';
 
 router.get('/go', function(req, res){
-  // find token
-  User.find({}, function(err, user){
+  // get access token
+  User.find({}, function(err, users){
     if(err){
-      console.log('error getting npr token', err);
+      console.log('Error grabbing token');
+      res.sendStatus(401);
     } else {
-      console.log('got npr token', user);
-      // npr.config = {
-      //   accessToken: "gPdaRkYhVQOhBum16aqoQidnRybIpgoFv2H9gjwl"
-      // }
-      // npr.accessToken = "gPdaRkYhVQOhBum16aqoQidnRybIpgoFv2H9gjwl";
+      console.log('Got npr token');
+      accessToken = users[0].npr_token;
+      // get recommendations
+      var options = {
+        url: 'https://api.npr.org/listening/v2/recommendations?channel=npr',
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Authorization=Bearer " + accessToken
+        }
+      };
 
+      request(options, function(err, response, body){
+        if(err){
+          console.log('Error getting recommendations:', err);
+          res.sendStatus(400);
+        } else {
+          // data.items.links.audio[0].href
+          console.log('Got NPR recommendations.', body);
+          res.send(body);
+        }
+      });
     }
-  })
-
+  });
 });
 
 module.exports = router;

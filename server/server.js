@@ -9,10 +9,6 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var routes = require('./routes');
-var nprSDK = require('../node_modules/npr-one-sdk/dist/node/index').default;
-var npr = new nprSDK();
-npr.accessToken = "gPdaRkYhVQOhBum16aqoQidnRybIpgoFv2H9gjwl";
-exports.npr = npr;
 
 var app = express();
 

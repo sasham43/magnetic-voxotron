@@ -54,8 +54,10 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', function($http
 
   nc.go = function(){
     console.log('go npr go');
-    $http.get('/npr/go', function(response){
-      console.log('npr go:', response.body);
+    $http.get('/npr/go').then(function(response){
+      console.log('npr go:', response);
+    }).then(function(response){
+      console.log('npr go fail:', response);
     });
   }
   console.log('npr controller loaded.');
