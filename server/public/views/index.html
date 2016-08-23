@@ -15,11 +15,13 @@
 
     <base href="/">
   </head>
-  <body class="container">
-    <nav class="row" ng-controller="NavController as nc">
-      <a class="one-third column nav-link" href="/cd">cd</a>
-      <a class="one-third column nav-link" href="/spotify">spotify</a>
-      <a class="one-third column nav-link" href="/npr">npr</a>
+  <body class="container" ng-controller="IndexController as ic">
+    <button ng-click="ic.openNav()" class="nav-show">Menu</button>
+    <nav class="row" ng-show="ic.showNav">
+      <a class="nav-link" href="/cd">cd</a>
+      <a class="nav-link" href="/spotify">spotify</a>
+      <a class="nav-link" href="/npr">npr</a>
+      <a class="nav-link" href="/settings">settings</a>
     </nav>
     <h1>Welcome to the Marvelous, the Magnificent Magnetic Voxotron!</h1>
     <ng-view></ng-view>

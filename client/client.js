@@ -22,11 +22,22 @@ angular.module('MagVoxApp').config(['$routeProvider', '$locationProvider', funct
       controller: 'NPRController',
       controllerAs: 'nc'
     })
+    .when('/settings', {
+      templateUrl: '/views/settings.html',
+      controller: 'SettingsController',
+      controllerAs: 'setc'
+    })
 
     $locationProvider.html5Mode(true);
 }]);
 
 angular.module('MagVoxApp').controller('IndexController', ['$http', function($http){
+  var ic = this;
+
+  ic.openNav = function(){
+    ic.showNav = !ic.showNav;
+  }
+
   console.log('index controller loaded.');
 }]);
 
@@ -46,6 +57,6 @@ angular.module('MagVoxApp').controller('CDController', ['$http', function($http)
   console.log('cd controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('NavController', ['$http', function($http){
-  console.log('nav controller loaded.');
+angular.module('MagVoxApp').controller('SettingsController', ['$http', function($http){
+  console.log('settings controller loaded.');
 }]);
