@@ -4,8 +4,8 @@ angular.module('MagVoxApp').config(['$routeProvider', '$locationProvider', funct
   $routeProvider
     .when('/', {
       templateUrl: '/views/splash.html',
-      controller: 'SplashController',
-      controllerAs: 'splashc'
+      controller: 'NowPlayingController',
+      controllerAs: 'npc'
     })
     .when('/spotify', {
       templateUrl: '/views/spotify.html',
@@ -41,8 +41,8 @@ angular.module('MagVoxApp').controller('IndexController', ['$http', function($ht
   console.log('index controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('SplashController', ['$http', function($http){
-  console.log('splash controller loaded.');
+angular.module('MagVoxApp').controller('NowPlayingController', ['$http', function($http){
+  console.log('now playing controller loaded.');
 }]);
 
 angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($http){
