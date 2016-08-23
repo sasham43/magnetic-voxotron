@@ -30,18 +30,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // auth routes
-var auth = require('./modules/auth.js');
+var auth = require('./modules/auth.js').router;
+var npr = require('./modules/npr.js');
 
 app.use('/auth', auth);
 
-// temp auth routes
-app.get('/success', function(req, res){
-  res.send('success');
-});
-
-app.get('/failure', function(req, res){
-  res.send('failure');
-});
+app.use('/npr', npr);
 
 app.get('/', routes.index);
 app.get('/*', routes.index);

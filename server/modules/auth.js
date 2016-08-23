@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var nprSDK = require('../../node_modules/npr-one-sdk/dist/node/index').default;
+var npr = new nprSDK();
 
 var nprScope = [
   'identity.readonly',
@@ -19,8 +21,12 @@ passport.use('npr', new OAuth2Strategy({
   callbackURL: 'http://localhost:3000/auth/npr/callback'
 }, function(accessToken, refreshToken, profile, done){
   process.nextTick(function(){
-    console.log('accessToken, refreshToken:', accessToken, refreshToken);
     module.exports.nprAccessToken = accessToken;
+    npr.config = {
+      accessToken: 'Bearer ' + accessToken
+    };
+    console.log('npr.accessToken', npr.accessToken);
+
     return done(null, profile);
   });
 }));
@@ -33,16 +39,32 @@ passport.deserializeUser(function(obj, done){
   done(null, obj);
 });
 
-router.get('/npr/callback', passport.authenticate('npr', {successRedirect: '/npr', failureRedirect: '/settings'}), function(req, res){
-  console.log('npr callback req:', req);
-  res.sendStatus(200);
-});
-
 router.get('/npr', passport.authenticate('npr', {scope: nprScope}), function(req, res){
   // nothing
   console.log('authenticating with npr');
 });
 
+router.get('/npr/callback', passport.authenticate('npr', {successRedirect: '/npr', failureRedirect: '/settings'}), function(req, res){
+  console.log('npr callback req:', req);
+  res.sendStatus(200);
+});
+
+router.get('/npr/logout', function(req, res){
+  req.logout();
+  res.redirect('/settings');
+});
 
 
-module.exports = router;
+router.get('/npr/info', ensureAuthenticated, function(req, res){
+  res.send(req.user);
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/settings');
+}
+
+
+
+exports.router = router;
+exports.npr = npr;

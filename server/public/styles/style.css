@@ -42,3 +42,8 @@ a:nth-child(5){
   background-color: #229999;
   color: #eeeeee;
 }
+
+.auth-link{
+  font-size: 2em;
+  
+}

@@ -50,6 +50,14 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
 }]);
 
 angular.module('MagVoxApp').controller('NPRController', ['$http', function($http){
+  var nc = this;
+
+  nc.go = function(){
+    console.log('go npr go');
+    $http.get('/npr/go', function(response){
+      console.log('npr go:', response.body);
+    });
+  }
   console.log('npr controller loaded.');
 }]);
 
