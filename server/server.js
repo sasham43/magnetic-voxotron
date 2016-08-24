@@ -47,7 +47,6 @@ var auth = require('./modules/auth.js').router;
 var npr = require('./modules/npr.js');
 
 app.use('/auth', auth);
-
 app.use('/npr', npr);
 
 app.get('/', routes.index);
