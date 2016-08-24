@@ -2,13 +2,14 @@ var router = require('express').Router();
 var request = require('request');
 var User = require('../models/userModel');
 var wget = require('wget-improved');
+var fs = require('fs');
 var Mplayer = require('mplayer');
-var mplayer = new Mplayer();
+var player = new Mplayer();
 
 var accessToken = '';
 var recs = [];
-var recCount = 0;
-var destArray = [];
+var count = 0;
+var storyArray = [];
 
 router.get('/go', function(req, res){
   // get access token
@@ -33,11 +34,20 @@ router.get('/go', function(req, res){
           console.log('Error getting recommendations:', err);
           res.sendStatus(400);
         } else {
-          body = JSON.parse(body);
-          // data.items.links.audio[0].href
-          recs = body.items;
           console.log('Got NPR recommendations.');
-          startDownloading(recCount);
+          body = JSON.parse(body); // parse response
+          recs = body.items;
+          // run through and grab all links
+          recs.map(function(story){
+            var tmp = {
+              href: story.links.audio[0].href,
+              type: story.links.audio[0]['content-type'],
+              title: story.attributes.title ? story.attributes.title : '' // include the story's title if there is one
+            }
+            storyArray.push(tmp);
+          });
+          writePLSFile('./server/tmp/npr.pls', storyArray);
+          //startPlaying();
           res.send(body);
         }
       });
@@ -45,44 +55,33 @@ router.get('/go', function(req, res){
   });
 });
 
-function startDownloading(count){
-  var file = recs[count];
-  var extension = '';
-  var filename = file.attributes.uid;
-  switch(file.links.audio[0]['content-type']){
-    case 'audio/aac':
-      extension = '.mp4';
-      break;
-    case 'audio/mp3':
-      extension = '.mp3';
-      break;
-    default:
-      extension = '.mp4';
-  }
-  var dest = './server/tmp/' + filename + extension;
-  destArray.push(dest); // save to array for player
+function startPlaying(){
+  console.log('storyArray:', storyArray);
+  player.openFile(storyArray[count].href);
+  player.play();
+  count++;
+}
 
-  var options = {
-    dest: './server',
-    url: file.links.audio[0].href,
-    timeout: 2000
-  }
+player.on('stop', function(){
+  console.log('playlist over, get more recommendations.');
+});
 
-  wget.download(options.url, dest)
-    .on('error', function(){
-      if(err) console.log('error getting file:', err);
-    })
-    .on('end', function(){
-      console.log('got file');
-      // play file
-      recCount++;
-      if(recCount < 7){
-        startDownloading(recCount);
-      } else {
-        console.log('downloaded recommendations get more');
-        recCount = 0;
-      }
+function writePLSFile(filename, arr){
+  var plsString = '[playlist]\n';
+  arr.map(function(story, index){
+    plsString += 'File' + index + '=' + story.href + '\n'
+      + 'Title' + index + '=' + story.title + '\n';
+  });
+  plsString += 'NumberOfEntries=' + arr.length + 1;
+
+  fs.writeFile(filename, plsString, function(err){
+    console.log('wrote pls file', err);
+    player.openPlaylist(filename, {
+        cache: 128,
+        cacheMin: 1
     });
+    player.play();
+  });
 }
 
 module.exports = router;
