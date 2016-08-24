@@ -14,6 +14,7 @@ var app = express();
 
 // set up server
 var server = http.Server(app);
+var io = require('socket-io')(server);
 var port = process.env.PORT || 3000;
 
 // express config

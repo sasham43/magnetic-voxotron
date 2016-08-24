@@ -1,7 +1,6 @@
 var router = require('express').Router();
 var request = require('request');
 var User = require('../models/userModel');
-var wget = require('wget-improved');
 var fs = require('fs');
 var Mplayer = require('mplayer');
 var player = new Mplayer();
@@ -63,7 +62,7 @@ function startPlaying(){
 }
 
 player.on('stop', function(){
-  console.log('playlist over, get more recommendations.');
+  console.log('story over, playing next.');
 });
 
 function writePLSFile(filename, arr){

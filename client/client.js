@@ -59,7 +59,21 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', function($http
     }).then(function(response){
       console.log('npr go fail:', response);
     });
-  }
+  };
+
+  nc.pause = function(){
+
+  };
+
+  nc.skip = function(){
+
+  };
+
+  nc.rewind = function(){
+
+  };
+
+
   console.log('npr controller loaded.');
 }]);
 
