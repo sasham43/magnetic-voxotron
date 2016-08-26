@@ -50,6 +50,20 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', 'NowPla
   npc.spotifyPlaying = NowPlayingFactory.spotifyPlaying;
   npc.cdPlaying = NowPlayingFactory.cdPlaying;
 
+  npc.currentService = '';
+  if(npc.nprPlaying){
+    npc.currentService = 'NPR';
+  }
+  if(npc.spotifyPlaying){
+    npc.currentService = 'Spotify';
+  }
+  if(npc.cdPlaying){
+    npc.currentService = 'CD';
+  }
+  if(!npc.nprPlaying && !npc.spotifyPlaying && !npc.cdPlaying){
+    npc.currentService = 'Nothing Selected';
+  }
+
   console.log('now playing controller loaded.');
 }]);
 
@@ -116,6 +130,6 @@ angular.module('MagVoxApp').factory('NowPlayingFactory', ['$http', function($htt
   return {
     nprPlaying: nprPlaying,
     spotifyPlaying: spotifyPlaying,
-    cdPlaying: cdPlaying,
+    cdPlaying: cdPlaying
   }
 }]);

@@ -11,6 +11,7 @@ var recs = [];
 var count = 0;
 var storyArray = [];
 var playing = false;
+var filename = './server/tmp/npr.pls';
 
 router.get('/go', function(req, res){
   // get access token
@@ -49,7 +50,7 @@ router.get('/go', function(req, res){
             }
             storyArray.push(tmp);
           });
-          writePLSFile('./server/tmp/npr.pls', storyArray);
+          writePLSFile(filename, storyArray);
           res.send(body);
         }
       });
@@ -100,6 +101,8 @@ io.on('connection', function(socket){
     emitStatus();
   });
 
+  socket.on('go', openPlaylist)
+
   socket.on('get npr status', emitStatus);
 });
 
@@ -112,12 +115,16 @@ function writePLSFile(filename, arr){
   plsString += 'NumberOfEntries=' + arr.length + 1;
 
   fs.writeFile(filename, plsString, function(err){
-    console.log('wrote pls file', player);
-    player.openPlaylist(filename, {
-        cache: 128,
-        cacheMin: 1,
-        pause: 0
-    });
+    console.log('wrote pls file.');
+  });
+}
+
+function openPlaylist(){
+  console.log('wrote pls file', player);
+  player.openPlaylist(filename, {
+      cache: 128,
+      cacheMin: 1,
+      pause: 0
   });
 }
 
