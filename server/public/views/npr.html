@@ -1,9 +1,12 @@
 <h2>NPR</h2>
-{{nc.playing}}
-<button class="npr-play" ng-click="nc.cmd('play')">
-  <span ng-show="!nc.playing">play</span>
-  <span ng-show="nc.playing">pause</span>
-</button>
-<button class="npr-play" ng-click="nc.cmd('next')">next</button>
-<button class="npr-play" ng-click="nc.cmd('rewind')">rewind</button>
-<button class="npr-play" ng-click="nc.status()">status</button>
+<div class="spinner-icon" ng-class="{'spinner-spin': nc.playing}">
+
+</div>
+<div class="npr-controls row">
+  <button class="npr-play three columns offset-by-one" ng-click="nc.cmd('rewind')">rewind</button>
+  <button class="npr-play three columns" ng-click="nc.cmd('play')">
+    <span ng-show="!nc.playing">play</span>
+    <span ng-show="nc.playing">pause</span>
+  </button>
+  <button class="npr-play three columns" ng-click="nc.cmd('next')">next</button>
+</div>

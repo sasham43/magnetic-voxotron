@@ -58,7 +58,6 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', func
 
   socket.on('connected', function(data){
     console.log('socket connected.');
-    socket.emit('get status');
   });
 
   socket.on('disconnected', function(data){

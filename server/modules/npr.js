@@ -61,16 +61,9 @@ player.on('stop', function(){
   console.log('story over, playing next.');
 });
 
-// player.once('start', function(){
-//   //player.stop();
-// });
-
-
-
 io.on('connection', function(socket){
   var emitStatus = function(data){
-      playing = player.status.playing;
-      console.log('status:', player._events);
+      console.log('status:', player.status);
       socket.emit('status', player.status);
   };
 
@@ -81,13 +74,7 @@ io.on('connection', function(socket){
   console.log('socket connected.');
   socket.emit('connected');
 
-  // player.on('status', function(){
-  //   console.log('status change!!!!\n', player.status)
-  //   if(player.status.playing === playing){
-  //     emitStatus();
-  //   }
-  // });
-
+  // handle commands
   socket.on('npr command', function(data){
     console.log('npr command:', data.cmd);
     switch(data.cmd){
@@ -113,7 +100,7 @@ io.on('connection', function(socket){
     emitStatus();
   });
 
-  //socket.on('get status', emitStatus);
+  socket.on('get status', emitStatus);
 });
 
 function writePLSFile(filename, arr){
