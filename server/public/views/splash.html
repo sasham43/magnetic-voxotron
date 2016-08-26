@@ -1,0 +1,12 @@
+<h2>Now Playing</h2>
+<div class="spinner-icon" ng-class="
+  {'spinner-spin': npc.nprPlaying || npc.spotifyPlaying || npc.cdPlaying,
+    'spinner-red': npc.nprPlaying,
+    'spinner-green': npc.spotifyPlaying,
+    'spinner-blue': npc.cdPlaying,
+    'spinner-black': !npc.nprPlaying && !npc.spotifyPlaying && !npc.cdPlaying
+  }">
+
+</div>
+{{npc.cdPlaying}}
+<h3>{{npc.currentService}}</h3>

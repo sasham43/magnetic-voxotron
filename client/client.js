@@ -43,7 +43,13 @@ angular.module('MagVoxApp').controller('IndexController', ['$http', function($ht
   console.log('index controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('NowPlayingController', ['$http', function($http){
+angular.module('MagVoxApp').controller('NowPlayingController', ['$http', 'NowPlayingFactory', function($http, NowPlayingFactory){
+  var npc = this;
+
+  npc.nprPlaying = NowPlayingFactory.nprPlaying;
+  npc.spotifyPlaying = NowPlayingFactory.spotifyPlaying;
+  npc.cdPlaying = NowPlayingFactory.cdPlaying;
+
   console.log('now playing controller loaded.');
 }]);
 
@@ -51,10 +57,11 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
   console.log('spotify controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', function($http, $scope){
+angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'NowPlayingFactory', function($http, $scope, NowPlayingFactory){
   var nc = this;
 
   nc.playing = true;
+  NowPlayingFactory.nprPlaying = nc.playing;
 
   socket.on('connected', function(data){
     console.log('socket connected.');
@@ -64,16 +71,17 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', func
     console.log('socket disconnected.');
   });
 
-  socket.on('status', function(data){
-    console.log('player status:', data);
+  socket.on('npr status', function(data){
+    console.log('npr status:', data);
     $scope.$apply(
       nc.playing = data.playing
+
     );
   });
 
   nc.go = function(){
     $http.get('/npr/go').then(function(response){
-      console.log('npr go:', response);
+      console.log('npr recs:', response);
     }).then(function(response){
       //console.log('npr go fail:', response);
     });
@@ -85,7 +93,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', func
   };
 
   nc.status = function(){
-    socket.emit('get status');
+    socket.emit('get npr status');
   }
 
   nc.go();
@@ -98,4 +106,16 @@ angular.module('MagVoxApp').controller('CDController', ['$http', function($http)
 
 angular.module('MagVoxApp').controller('SettingsController', ['$http', function($http){
   console.log('settings controller loaded.');
+}]);
+
+angular.module('MagVoxApp').factory('NowPlayingFactory', ['$http', function($http){
+  var nprPlaying = false;
+  var spotifyPlaying = false;
+  var cdPlaying = false;
+
+  return {
+    nprPlaying: nprPlaying,
+    spotifyPlaying: spotifyPlaying,
+    cdPlaying: cdPlaying,
+  }
 }]);

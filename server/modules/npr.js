@@ -63,8 +63,8 @@ player.on('stop', function(){
 
 io.on('connection', function(socket){
   var emitStatus = function(data){
-      console.log('status:', player.status);
-      socket.emit('status', player.status);
+      console.log('npr status:', player.status);
+      socket.emit('npr status', player.status);
   };
 
   socket.on('error', function(err){
@@ -100,7 +100,7 @@ io.on('connection', function(socket){
     emitStatus();
   });
 
-  socket.on('get status', emitStatus);
+  socket.on('get npr status', emitStatus);
 });
 
 function writePLSFile(filename, arr){
