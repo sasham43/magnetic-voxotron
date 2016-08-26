@@ -1,7 +1,9 @@
 <h2>NPR</h2>
-
-<button class="npr-play" ng-click="nc.cmd('play')">play</button>
-<button class="npr-play" ng-click="nc.cmd('pause')">pause</button>
+{{nc.playing}}
+<button class="npr-play" ng-click="nc.cmd('play')">
+  <span ng-show="!nc.playing">play</span>
+  <span ng-show="nc.playing">pause</span>
+</button>
 <button class="npr-play" ng-click="nc.cmd('next')">next</button>
 <button class="npr-play" ng-click="nc.cmd('rewind')">rewind</button>
 <button class="npr-play" ng-click="nc.status()">status</button>

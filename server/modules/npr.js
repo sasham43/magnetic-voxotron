@@ -10,6 +10,7 @@ var accessToken = '';
 var recs = [];
 var count = 0;
 var storyArray = [];
+var playing = false;
 
 router.get('/go', function(req, res){
   // get access token
@@ -60,20 +61,38 @@ player.on('stop', function(){
   console.log('story over, playing next.');
 });
 
+// player.once('start', function(){
+//   //player.stop();
+// });
+
+
 
 io.on('connection', function(socket){
   var emitStatus = function(data){
+      playing = player.status.playing;
+      console.log('status:', player._events);
       socket.emit('status', player.status);
   };
 
+  socket.on('error', function(err){
+    console.log('socket error:', err);
+  });
+
   console.log('socket connected.');
   socket.emit('connected');
+
+  player.on('status', function(){
+    console.log('status change!!!!\n', player.status)
+    if(player.status === playing){
+      emitStatus();
+    }
+  });
 
   socket.on('npr command', function(data){
     console.log('npr command:', data.cmd);
     switch(data.cmd){
       case 'play':
-        player.play();
+        player.status.playing ? player.pause() : player.play();
         break;
       case 'pause':
         player.pause();
@@ -94,7 +113,7 @@ io.on('connection', function(socket){
     emitStatus();
   });
 
-  socket.on('get status', emitStatus);
+  //socket.on('get status', emitStatus);
 });
 
 function writePLSFile(filename, arr){
@@ -105,13 +124,15 @@ function writePLSFile(filename, arr){
   });
   plsString += 'NumberOfEntries=' + arr.length + 1;
 
-  fs.writeFile(filename, plsString, function(err){ 
+  fs.writeFile(filename, plsString, function(err){
     console.log('wrote pls file', player);
     player.openPlaylist(filename, {
         cache: 128,
-        cacheMin: 1
+        cacheMin: 1,
+        pause: 0
     });
     //player.play();
+    player.stop();
   });
 }
 

@@ -51,11 +51,14 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
   console.log('spotify controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('NPRController', ['$http', function($http){
+angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', function($http, $scope){
   var nc = this;
+
+  nc.playing = false;
 
   socket.on('connected', function(data){
     console.log('socket connected.');
+    socket.emit('get status');
   });
 
   socket.on('disconnected', function(data){
@@ -64,6 +67,9 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', function($http
 
   socket.on('status', function(data){
     console.log('player status:', data);
+    $scope.$apply(
+      nc.playing = data.playing
+    );
   });
 
   nc.go = function(){
