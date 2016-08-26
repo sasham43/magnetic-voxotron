@@ -10,7 +10,8 @@ module.exports = function(grunt){
           'angular/angular.min.js.map',
           'angular-route/angular-route.min.js',
           'angular-route/angular-route.min.js.map',
-          'skeleton-css/css/skeleton.css'
+          'skeleton-css/css/skeleton.css',
+          'socket.io-client/socket.io.js'
         ],
         dest: 'server/public/vendor'
       }

@@ -1,5 +1,7 @@
 angular.module('MagVoxApp', ['ngRoute']);
 
+var socket = io();
+
 angular.module('MagVoxApp').config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
   $routeProvider
     .when('/', {
@@ -52,28 +54,36 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
 angular.module('MagVoxApp').controller('NPRController', ['$http', function($http){
   var nc = this;
 
+  socket.on('connected', function(data){
+    console.log('socket connected.');
+  });
+
+  socket.on('disconnected', function(data){
+    console.log('socket disconnected.');
+  });
+
+  socket.on('status', function(data){
+    console.log('player status:', data);
+  });
+
   nc.go = function(){
-    console.log('go npr go');
     $http.get('/npr/go').then(function(response){
       console.log('npr go:', response);
     }).then(function(response){
-      console.log('npr go fail:', response);
+      //console.log('npr go fail:', response);
     });
   };
 
-  nc.pause = function(){
-
+  nc.cmd = function(cmd){
+    socket.emit('npr command', {cmd: cmd});
+    console.log('npr command:', cmd);
   };
 
-  nc.skip = function(){
+  nc.status = function(){
+    socket.emit('get status');
+  }
 
-  };
-
-  nc.rewind = function(){
-
-  };
-
-
+  nc.go();
   console.log('npr controller loaded.');
 }]);
 

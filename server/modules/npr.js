@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var request = require('request');
 var User = require('../models/userModel');
+var io = require('../server.js').io;
 var fs = require('fs');
 var Mplayer = require('mplayer');
 var player = new Mplayer();
@@ -19,6 +20,7 @@ router.get('/go', function(req, res){
     } else {
       console.log('Got npr token');
       accessToken = users[0].npr_token;
+
       // get recommendations
       var options = {
         url: 'https://api.npr.org/listening/v2/recommendations?channel=npr',
@@ -36,6 +38,7 @@ router.get('/go', function(req, res){
           console.log('Got NPR recommendations.');
           body = JSON.parse(body); // parse response
           recs = body.items;
+
           // run through and grab all links
           recs.map(function(story){
             var tmp = {
@@ -46,7 +49,6 @@ router.get('/go', function(req, res){
             storyArray.push(tmp);
           });
           writePLSFile('./server/tmp/npr.pls', storyArray);
-          //startPlaying();
           res.send(body);
         }
       });
@@ -54,32 +56,62 @@ router.get('/go', function(req, res){
   });
 });
 
-function startPlaying(){
-  console.log('storyArray:', storyArray);
-  player.openFile(storyArray[count].href);
-  player.play();
-  count++;
-}
-
 player.on('stop', function(){
   console.log('story over, playing next.');
+});
+
+
+io.on('connection', function(socket){
+  var emitStatus = function(data){
+      socket.emit('status', player.status);
+  };
+
+  console.log('socket connected.');
+  socket.emit('connected');
+
+  socket.on('npr command', function(data){
+    console.log('npr command:', data.cmd);
+    switch(data.cmd){
+      case 'play':
+        player.play();
+        break;
+      case 'pause':
+        player.pause();
+        break;
+      case 'next':
+        // next
+        player.seekPercent(100);
+        break;
+      case 'rewind':
+        // rewind
+        var pos = player.status.position - 15;
+        if(pos < 0){
+          pos = 0;
+        }
+        player.seek(pos);
+        break;
+    }
+    emitStatus();
+  });
+
+  socket.on('get status', emitStatus);
 });
 
 function writePLSFile(filename, arr){
   var plsString = '[playlist]\n';
   arr.map(function(story, index){
     plsString += 'File' + index + '=' + story.href + '\n'
-      + 'Title' + index + '=' + story.title + '\n';
+      + 'Title' + index + '=' + story.title + '\n\n';
   });
   plsString += 'NumberOfEntries=' + arr.length + 1;
 
-  fs.writeFile(filename, plsString, function(err){
-    console.log('wrote pls file', err);
+  fs.writeFile(filename, plsString, function(err){ 
+    console.log('wrote pls file', player);
     player.openPlaylist(filename, {
         cache: 128,
         cacheMin: 1
     });
-    player.play();
+    //player.play();
   });
 }
 
