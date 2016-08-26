@@ -38,6 +38,10 @@ angular.module('MagVoxApp').controller('IndexController', ['$http', function($ht
 
   ic.openNav = function(){
     ic.showNav = !ic.showNav;
+  };
+
+  ic.hideNav = function(){
+    ic.showNav = false;
   }
 
   console.log('index controller loaded.');
