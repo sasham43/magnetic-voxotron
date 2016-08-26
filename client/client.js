@@ -54,7 +54,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
 angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', function($http, $scope){
   var nc = this;
 
-  nc.playing = false;
+  nc.playing = true;
 
   socket.on('connected', function(data){
     console.log('socket connected.');

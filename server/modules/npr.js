@@ -81,12 +81,12 @@ io.on('connection', function(socket){
   console.log('socket connected.');
   socket.emit('connected');
 
-  player.on('status', function(){
-    console.log('status change!!!!\n', player.status)
-    if(player.status === playing){
-      emitStatus();
-    }
-  });
+  // player.on('status', function(){
+  //   console.log('status change!!!!\n', player.status)
+  //   if(player.status.playing === playing){
+  //     emitStatus();
+  //   }
+  // });
 
   socket.on('npr command', function(data){
     console.log('npr command:', data.cmd);
@@ -131,8 +131,6 @@ function writePLSFile(filename, arr){
         cacheMin: 1,
         pause: 0
     });
-    //player.play();
-    player.stop();
   });
 }
 
