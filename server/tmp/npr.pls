@@ -335,4 +335,28 @@ Title110=New at the fair: Recipe cards
 File111=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_hurricane_katrina_victim_helps_people_recover_after_louisiana_floods.mp3?orgId=1&topicId=1091&d=302&p=2&story=491531841&t=progseg&e=491456466&seg=11&NPROne=true
 Title111=Hurricane Katrina Victim Helps People Recover After Louisiana Floods
 
-NumberOfEntries=1121
+File112=http://download.npr.org/npr-mp4/nprone/hello/halcyon1/112.mp4
+Title112=MPR
+
+File113=https://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/26/newscastShort180632.mp3
+Title113=National Newscast
+
+File114=http://cpa.ds.npr.org/newscasts/111/2016/08/111-newscast-2016-08-26T18-13-00.mp4
+Title114=Local Newscast
+
+File115=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_university_of_chicago_tells_freshmen_it_does_not_support_trigger_warnings.mp3?orgId=1&topicId=1013&d=203&p=2&story=491531869&t=progseg&e=491456466&seg=18&NPROne=true
+Title115=University Of Chicago Tells Freshmen It Does Not Support Trigger Warnings
+
+File116=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_the_first_couples_first_date_charms_in_southside_with_you.mp3?orgId=1&topicId=4467349&d=278&p=2&story=491486057&t=progseg&e=491456466&seg=19&NPROne=true
+Title116=The First Couple's First Date Charms In 'Southside With You'
+
+File117=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_after_4-year_siege_rebels_and_families_evacuate_darayya_syria.mp3?orgId=1&topicId=1009&d=150&p=2&story=491531848&t=progseg&e=491456466&seg=12&NPROne=true
+Title117=After 4-Year Siege, Rebels And Families Evacuate Darayya, Syria
+
+File118=http://pd.npr.org/anon.npr-mp3/mpr/media/2016/08/2016_08_25_state_fair_recipe_cards.mp3?NPROne=true
+Title118=New at the fair: Recipe cards
+
+File119=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_hurricane_katrina_victim_helps_people_recover_after_louisiana_floods.mp3?orgId=1&topicId=1091&d=302&p=2&story=491531841&t=progseg&e=491456466&seg=11&NPROne=true
+Title119=Hurricane Katrina Victim Helps People Recover After Louisiana Floods
+
+NumberOfEntries=1201
