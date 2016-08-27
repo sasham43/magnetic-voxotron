@@ -123,4 +123,13 @@ a:nth-child(5){
     margin-right: auto;
     margin-left: auto;
   }
+  h1{
+    font-size: 6em;
+  }
+  h2{
+    font-size: 4em;
+  }
+  h3{
+    font-size: 3em;
+  }
 }

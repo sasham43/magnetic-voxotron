@@ -1,26 +1,29 @@
 [playlist]
-File0=http://download.npr.org/npr-mp4/nprone/hello/scholars2/112.mp4
+File0=http://download.npr.org/npr-mp4/nprone/hello/amidst1/112.mp4
 Title0=MPR
 
-File1=https://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/26/newscastShort180632.mp3
+File1=https://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/27/newscastShort160626.mp3
 Title1=National Newscast
 
-File2=http://cpa.ds.npr.org/newscasts/111/2016/08/111-newscast-2016-08-26T18-13-00.mp4
-Title2=Local Newscast
+File2=http://play.podtrac.com/npr-510312/ondemand.npr.org/anon.npr-mp3/npr/codeswitch/2016/06/20160629_codeswitch_oj.mp3?orgId=1&d=1185&p=510312&story=483889238&t=podcast&e=483889238&NPROne=true
+Title2="I'm Not Black, I'm O.J.!"
 
-File3=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_university_of_chicago_tells_freshmen_it_does_not_support_trigger_warnings.mp3?orgId=1&topicId=1013&d=203&p=2&story=491531869&t=progseg&e=491456466&seg=18&NPROne=true
-Title3=University Of Chicago Tells Freshmen It Does Not Support Trigger Warnings
+File3=http://download.npr.org/npr-mp4/nprone/hello/magictime1/112.mp4
+Title3=MPR
 
-File4=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_the_first_couples_first_date_charms_in_southside_with_you.mp3?orgId=1&topicId=4467349&d=278&p=2&story=491486057&t=progseg&e=491456466&seg=19&NPROne=true
-Title4=The First Couple's First Date Charms In 'Southside With You'
+File4=https://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/27/newscastShort160626.mp3
+Title4=National Newscast
 
-File5=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_after_4-year_siege_rebels_and_families_evacuate_darayya_syria.mp3?orgId=1&topicId=1009&d=150&p=2&story=491531848&t=progseg&e=491456466&seg=12&NPROne=true
-Title5=After 4-Year Siege, Rebels And Families Evacuate Darayya, Syria
+File5=http://play.podtrac.com/npr-510312/ondemand.npr.org/anon.npr-mp3/npr/codeswitch/2016/06/20160629_codeswitch_oj.mp3?orgId=1&d=1185&p=510312&story=483889238&t=podcast&e=483889238&NPROne=true
+Title5="I'm Not Black, I'm O.J.!"
 
-File6=http://pd.npr.org/anon.npr-mp3/mpr/media/2016/08/2016_08_25_state_fair_recipe_cards.mp3?NPROne=true
-Title6=New at the fair: Recipe cards
+File6=http://download.npr.org/npr-mp4/nprone/hello/amidst1/112.mp4
+Title6=MPR
 
-File7=https://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160826_atc_hurricane_katrina_victim_helps_people_recover_after_louisiana_floods.mp3?orgId=1&topicId=1091&d=302&p=2&story=491531841&t=progseg&e=491456466&seg=11&NPROne=true
-Title7=Hurricane Katrina Victim Helps People Recover After Louisiana Floods
+File7=https://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/27/newscastShort160626.mp3
+Title7=National Newscast
 
-NumberOfEntries=81
+File8=http://play.podtrac.com/npr-510312/ondemand.npr.org/anon.npr-mp3/npr/codeswitch/2016/06/20160629_codeswitch_oj.mp3?orgId=1&d=1185&p=510312&story=483889238&t=podcast&e=483889238&NPROne=true
+Title8="I'm Not Black, I'm O.J.!"
+
+NumberOfEntries=91
