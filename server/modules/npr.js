@@ -62,20 +62,19 @@ player.on('stop', function(){
   console.log('story over, playing next.');
 });
 
-io.on('connection', function(socket){
-  var emitStatus = function(data){
-      console.log('npr status:', player.status);
-      socket.emit('npr status', player.status);
-  };
+var nprModule = {};
 
-  socket.on('error', function(err){
-    console.log('socket error:', err);
+nprModule.emitStatus = function(socket){
+  socket.on('get npr status', function(data){
+    socket.emit('npr status', player.status);
   });
+};
 
-  console.log('socket connected.');
-  socket.emit('connected');
+nprModule.openPlaylist = function(socket){
+  socket.on('go', openPlaylist);
+};
 
-  // handle commands
+nprModule.command = function(socket){
   socket.on('npr command', function(data){
     console.log('npr command:', data.cmd);
     switch(data.cmd){
@@ -98,13 +97,12 @@ io.on('connection', function(socket){
         player.seek(pos);
         break;
     }
-    emitStatus();
+    socket.emit('npr status', player.status);
   });
+};
 
-  socket.on('go', openPlaylist)
 
-  socket.on('get npr status', emitStatus);
-});
+module.exports = nprModule;
 
 function writePLSFile(filename, arr){
   var plsString = '[playlist]\n';
@@ -119,7 +117,7 @@ function writePLSFile(filename, arr){
   });
 }
 
-function openPlaylist(filename){
+function openPlaylist(){
   console.log('wrote pls file', player);
   player.openPlaylist(filename, {
       cache: 128,
@@ -127,5 +125,3 @@ function openPlaylist(filename){
       pause: 0
   });
 }
-
-module.exports = router;

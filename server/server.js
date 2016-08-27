@@ -9,14 +9,27 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var routes = require('./routes');
+var spotifyModule = require('./modules/spotify.js');
+var nprModule = require('./modules/npr.js');
+// console.log('npr module:', nprModule);
 
 var app = express();
 
 // set up server & socket
 var server = http.Server(app);
 var io = require('socket.io')(server);
-module.exports.io = io;
+// module.exports.io = io;
 var port = process.env.PORT || 3000;
+
+io.on('connection', function(socket){
+  console.log('socket connected.');
+  nprModule.emitStatus(socket);
+  nprModule.command(socket);
+  nprModule.openPlaylist(socket);
+
+
+  spotifyModule.emitStatus(socket);
+});
 
 // express config
 app.use(express.static('server/public'));
@@ -46,12 +59,11 @@ mongoDB.once('open', function(){
 
 // auth routes
 var auth = require('./modules/auth.js').router;
-var npr = require('./modules/npr.js');
-var spotify = require('./modules/spotify.js');
+// var npr = require('./modules/npr.js');
 
 app.use('/auth', auth);
-app.use('/npr', npr);
-app.use('/spotify', spotify);
+// app.use('/npr', npr);
+// app.use('/spotify', spotify);
 
 app.get('/', routes.index);
 app.get('/*', routes.index);

@@ -78,7 +78,10 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
     console.log('spotify status', data);
   });
 
-  socket.emit('get spotify status');
+  sc.status = function(){
+    console.log('getting spotify status');
+    socket.emit('get spotify status');
+  };
 
   console.log('spotify controller loaded.');
 }]);
@@ -124,7 +127,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
   };
 
   // get recommendations
-  nc.go();
+  // nc.go();
   console.log('npr controller loaded.');
 }]);
 
