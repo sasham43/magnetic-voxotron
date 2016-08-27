@@ -50,11 +50,11 @@ var mongoURI = 'mongodb://localhost/magnetic-voxotron';
 var mongoDB = mongoose.connect(mongoURI).connection;
 
 mongoDB.on('error', function(err){
-  console.log('Error connecting to database:', err);
+  console.log('error connecting to database:', err);
 });
 
 mongoDB.once('open', function(){
-  console.log('Connected to database.');
+  console.log('connected to database.');
 });
 
 // auth routes

@@ -91,6 +91,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
 
   nc.playing = true;
   NowPlayingFactory.nprPlaying = nc.playing;
+  nc.story = {};
 
   socket.on('connected', function(data){
     console.log('socket connected.');
@@ -103,8 +104,8 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
   socket.on('npr status', function(data){
     console.log('npr status:', data);
     $scope.$apply(
-      nc.playing = data.playing
-
+      nc.playing = data.playing,
+      nc.story = data.story
     );
   });
 
