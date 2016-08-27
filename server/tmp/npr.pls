@@ -1,5 +1,5 @@
 [playlist]
-File0=http://download.npr.org/npr-mp4/nprone/hello/dechval1/112.mp4
+File0=http://download.npr.org/npr-mp4/nprone/hello/scholars2/112.mp4
 Title0=MPR
 
 File1=https://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/26/newscastShort180632.mp3

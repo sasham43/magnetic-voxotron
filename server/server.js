@@ -12,7 +12,7 @@ var routes = require('./routes');
 
 var app = express();
 
-// set up server
+// set up server & socket
 var server = http.Server(app);
 var io = require('socket.io')(server);
 module.exports.io = io;
@@ -47,9 +47,11 @@ mongoDB.once('open', function(){
 // auth routes
 var auth = require('./modules/auth.js').router;
 var npr = require('./modules/npr.js');
+var spotify = require('./modules/spotify.js');
 
 app.use('/auth', auth);
 app.use('/npr', npr);
+app.use('/spotify', spotify);
 
 app.get('/', routes.index);
 app.get('/*', routes.index);

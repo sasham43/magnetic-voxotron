@@ -119,7 +119,7 @@ function writePLSFile(filename, arr){
   });
 }
 
-function openPlaylist(){
+function openPlaylist(filename){
   console.log('wrote pls file', player);
   player.openPlaylist(filename, {
       cache: 128,
