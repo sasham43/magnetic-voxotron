@@ -8,6 +8,7 @@ var player = new Mplayer();
 
 var accessToken = '';
 var recs = [];
+var recPayload = {};
 var count = 0;
 var storyArray = [];
 var playing = false;
@@ -58,6 +59,12 @@ nprModule.command = function(socket){
   });
 };
 
+nprModule.like = function(socket){
+  socket.on('npr like', function(data){
+
+  });
+};
+
 nprModule.getRecommendations = function(socket){
   console.log('getting npr recommendations');
   socket.on('get npr recommendations', function(data){
@@ -85,6 +92,7 @@ nprModule.getRecommendations = function(socket){
           } else {
             console.log('Got NPR recommendations.');
             body = JSON.parse(body); // parse response
+            recsPayload = body;
             recs = body.items;
 
             // run through and grab all links

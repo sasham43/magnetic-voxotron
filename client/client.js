@@ -132,6 +132,10 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
     socket.emit('get npr status');
   };
 
+  nc.like = function(){
+    socket.emit('npr like');
+  };
+
   // get recommendations
   nc.go();
   console.log('npr controller loaded.');
