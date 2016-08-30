@@ -79,11 +79,12 @@ nprModule.command = function(socket){
         break;
       case 'rewind':
         // rewind
-        var pos = player.status.position - 15;
-        if(pos < 0){
-          pos = 0;
-        }
-        player.seek(pos);
+        nprRewind();
+        // var pos = player.status.position - 15;
+        // if(pos < 0){
+        //   pos = 0;
+        // }
+        // player.seek(pos);
         break;
     }
     socket.emit('npr status', player.status);
@@ -238,4 +239,12 @@ function nprNext(){
       getRecommendations
     ]);
   }
+}
+
+function nprRewind(){
+  var pos = player.status.position - 15;
+  if(pos < 0){
+    pos = 0;
+  }
+  player.seek(pos);
 }
