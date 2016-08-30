@@ -67,7 +67,8 @@ nprModule.command = function(socket){
     console.log('npr command:', data.cmd);
     switch(data.cmd){
       case 'play':
-        player.status.playing ? player.pause() : player.play();
+        nprPlay();
+        //player.status.playing ? player.pause() : player.play();
         break;
       case 'pause':
         player.pause();
@@ -247,4 +248,8 @@ function nprRewind(){
     pos = 0;
   }
   player.seek(pos);
+}
+
+function nprPlay(){
+  player.status.playing ? player.pause() : player.play();
 }
