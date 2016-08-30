@@ -29,16 +29,14 @@ player.on('stop', function(){
     postRecommendations
   ]);
 
-  // if(!accessToken){
-  //   getAccessToken(postRecommendations);
-  // } else {
-  //   postRecommendations();
-  // }
-
   count++;
   player.status.story = storyArray[count];
   if(nprSocket){
-    nprModule.emitStatus(nprSocket);
+    setTimeout(function(){
+      console.log('emitting status...');
+      nprSocket.emit('npr status', player.status);
+    }, 1000);
+    // nprModule.emitStatus(nprSocket);
   }
 });
 
@@ -68,7 +66,8 @@ nprModule.command = function(socket){
         break;
       case 'next':
         // next
-        player.seekPercent(100);
+        //player.seekPercent(100);
+        nprNext();
         break;
       case 'rewind':
         // rewind
@@ -85,7 +84,7 @@ nprModule.command = function(socket){
 
 nprModule.like = function(socket){
   socket.on('npr like', function(data){
-    recsObject.items[count].rating.rating = "THUMBSUP";
+    recsRatings[count].rating = "THUMBSUP";
     async.series([
       getAccessToken,
       postRecommendations
@@ -98,64 +97,8 @@ nprModule.getRecommendations = function(socket){
     async.series([
       getAccessToken,
       getRecommendations
-    ])
+    ]);
   });
-  // console.log('getting npr recommendations...');
-  // socket.on('get npr recommendations', function(data){
-  //   User.find({}, function(err, users){
-  //     if(err){
-  //       console.log('error grabbing token');
-  //       res.sendStatus(401);
-  //     } else {
-  //       console.log('got npr token.');
-  //       accessToken = users[0].npr_token;
-  //
-  //       // get recommendations
-  //       // var options = {
-  //       //   url: 'https://api.npr.org/listening/v2/recommendations?channel=npr',
-  //       //   headers: {
-  //       //     "Accept": "application/json",
-  //       //     "Authorization": "Authorization=Bearer " + accessToken
-  //       //   }
-  //       // };
-  //
-  //       ////////////////
-  //       // request(options, function(err, response, body){
-  //       //   if(err){
-  //       //     console.log('error getting recommendations:', err);
-  //       //     res.sendStatus(400);
-  //       //   } else {
-  //       //     console.log('got NPR recommendations.');
-  //       //     body = JSON.parse(body); // parse response
-  //       //     recsObject = body;
-  //       //     recs = body.items;
-  //       //
-  //       //     // run through and grab all links
-  //       //     recs.map(function(story){
-  //       //       var title = '';
-  //       //       if(story.attributes.title){
-  //       //         title = story.attributes.title;
-  //       //       }
-  //       //       var href = story.links.audio[0].href;
-  //       //       if(href.includes('https')){
-  //       //         href = href.replace('https', 'http');
-  //       //       }
-  //       //       var tmp = {
-  //       //         href: href,
-  //       //         type: story.links.audio[0]['content-type'],
-  //       //         title: title // include the story's title if there is one
-  //       //       }
-  //       //       storyArray.push(tmp);
-  //       //     });
-  //       //     writePLSFile(filename, storyArray);
-  //       //     // res.send(body);
-  //       //     socket.emit('npr recommendations', recsObject);
-  //       //   }
-  //       // });
-  //       ///////////////
-  //     }
-  //   });
-  // })
 };
 
 module.exports = nprModule;
@@ -274,4 +217,15 @@ function getRecommendations(cb){
       cb(null);
     }
   });
+}
+
+function nprNext(){
+  if(storyArray[count+1] !== undefined){
+    player.seekPercent(100);
+  } else {
+    async.series([
+      getAccessToken,
+      getRecommendations
+    ]);
+  }
 }

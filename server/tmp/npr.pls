@@ -2,10 +2,10 @@
 File1=http://download.npr.org/npr-mp4/nprone/hello/magictime1/112.mp4
 Title1=MPR
 
-File2=http://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/30/newscastShort150634.mp3
+File2=http://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/30/newscastShort160625.mp3
 Title2=National Newscast
 
-File3=http://cpa.ds.npr.org/newscasts/111/2016/08/111-newscast-2016-08-30T15-12-00.mp4
+File3=http://cpa.ds.npr.org/newscasts/111/2016/08/111-newscast-2016-08-30T16-12-00.mp4
 Title3=Local Newscast
 
 File4=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/08/20160830_me_opioid_epidemic_prompts_police_to_help_rather_than_arrest_drug_users.mp3?orgId=329&topicId=1091&d=229&p=3&story=491906530&t=progseg&e=491904413&seg=17&NPROne=true
