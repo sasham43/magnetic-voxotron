@@ -3,5 +3,6 @@ DS_Store
 npm-debug.log
 .env
 *.pls
+server/tmp/npr.pls
 server/modules/spotify_appkey.key
 cache

@@ -8,7 +8,7 @@ var player = new Mplayer();
 
 var accessToken = '';
 var recs = [];
-var recPayload = {};
+var recsPayload = {};
 var count = 0;
 var storyArray = [];
 var playing = false;
@@ -16,6 +16,17 @@ var filename = './server/tmp/npr.pls';
 
 player.on('stop', function(){
   console.log('story over, playing next.');
+
+  if(!recsPayload.items[count].rating.rating){
+    recsPayload.items[count].rating.rating = "COMPLETED";
+  }
+
+  if(!accessToken){
+    getAccessToken(postRecommendations);
+  } else {
+    postRecommendations();
+  }
+
   count++;
   player.status.story = storyArray[count];
 });
@@ -61,7 +72,7 @@ nprModule.command = function(socket){
 
 nprModule.like = function(socket){
   socket.on('npr like', function(data){
-
+    recsPayload.items[count].rating.rating = "THUMBSUP";
   });
 };
 
@@ -142,4 +153,38 @@ function openPlaylist(){
       pause: 0
   });
   player.status.story = storyArray[0];
+}
+
+function getAccessToken(cb){
+  User.find({}, function(err, users){
+    if(err){
+      console.log('Error grabbing token');
+      res.sendStatus(401);
+    } else {
+      console.log('Got npr token');
+      accessToken = users[0].npr_token;
+      cb();
+    }
+  });
+}
+
+function postRecommendations(){
+  var options = {
+    type: 'POST',
+    url: 'https://api.npr.org/listening/v2/ratings?',
+    headers: {
+      "Accept": "application/json",
+      "Authorization": "Authorization=Bearer " + accessToken
+    },
+    body: recsPayload
+  };
+
+  request(options, function(err, response, body){
+    if(err){
+      console.log('error posting recommendations:', err);
+    } else {
+      console.log('posted recommendations');
+
+    }
+  });
 }
