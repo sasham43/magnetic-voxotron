@@ -68,24 +68,15 @@ nprModule.command = function(socket){
     switch(data.cmd){
       case 'play':
         nprPlay();
-        //player.status.playing ? player.pause() : player.play();
         break;
       case 'pause':
         player.pause();
         break;
       case 'next':
-        // next
-        //player.seekPercent(100);
         nprNext();
         break;
       case 'rewind':
-        // rewind
         nprRewind();
-        // var pos = player.status.position - 15;
-        // if(pos < 0){
-        //   pos = 0;
-        // }
-        // player.seek(pos);
         break;
     }
     socket.emit('npr status', player.status);
@@ -94,6 +85,7 @@ nprModule.command = function(socket){
 
 nprModule.like = function(socket){
   socket.on('npr like', function(data){
+    recsRatings[count].elapsed = Number(player.status.position);
     recsRatings[count].rating = "THUMBUP";
     async.series([
       getAccessToken,
