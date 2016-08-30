@@ -14,15 +14,22 @@ var recsRatings = [];
 var count = 0;
 var storyArray = [];
 var playing = false;
+var skipped = false;
 var filename = './server/tmp/npr.pls';
 
 var nprSocket;
 
 player.on('stop', function(){
-  console.log('story over, playing next.', recsObject);
+  console.log('story over, playing next.');
 
-  recsRatings[count].elapsed = recsRatings[count].duration;
-  recsRatings[count].rating = "COMPLETED";
+  if(skipped){
+    skipped = false;
+    recsRatings[count].elapsed = Number(player.status.position);
+    recsRatings[count].rating = "SKIP";
+  } else {
+    recsRatings[count].elapsed = recsRatings[count].duration;
+    recsRatings[count].rating = "COMPLETED";
+  }
 
   async.series([
     getAccessToken,
@@ -30,13 +37,14 @@ player.on('stop', function(){
   ]);
 
   count++;
+  player.status.count = count;
   player.status.story = storyArray[count];
   if(nprSocket){
+    // wait one second to allow mplayer status to update it self -- yes this sucks
     setTimeout(function(){
       console.log('emitting status...');
       nprSocket.emit('npr status', player.status);
     }, 1000);
-    // nprModule.emitStatus(nprSocket);
   }
 });
 
@@ -84,7 +92,7 @@ nprModule.command = function(socket){
 
 nprModule.like = function(socket){
   socket.on('npr like', function(data){
-    recsRatings[count].rating = "THUMBSUP";
+    recsRatings[count].rating = "THUMBUP";
     async.series([
       getAccessToken,
       postRecommendations
@@ -164,9 +172,9 @@ function postRecommendations(cb){
       console.log('error posting recommendations:', err);
       cb(err);
     } else {
-      console.log('posted recommendations.', body);
+      // console.log('posted recommendations.', body);
       if(nprSocket){
-        nprSocket.emit('npr recommendations', response);
+        nprSocket.emit('npr recommendations', recsRatings);
       }
       cb(null);
     }
@@ -220,7 +228,9 @@ function getRecommendations(cb){
 }
 
 function nprNext(){
-  if(storyArray[count+1] !== undefined){
+  console.log('next story:', count+1, storyArray.length);
+  if((count + 1) < storyArray.length){
+    skipped = true;
     player.seekPercent(100);
   } else {
     async.series([
