@@ -137,7 +137,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
   };
 
   // get recommendations
-  nc.go();
+  //nc.go();
   console.log('npr controller loaded.');
 }]);
 

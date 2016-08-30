@@ -4,6 +4,7 @@ var User = require('../models/userModel');
 var io = require('../server.js').io;
 var fs = require('fs');
 var Mplayer = require('mplayer');
+var async = require('async');
 var player = new Mplayer();
 
 var accessToken = '';
@@ -15,17 +16,22 @@ var playing = false;
 var filename = './server/tmp/npr.pls';
 
 player.on('stop', function(){
-  console.log('story over, playing next.');
+  console.log('story over, playing next.', recsPayload);
 
-  if(!recsPayload.items[count].rating.rating){
-    recsPayload.items[count].rating.rating = "COMPLETED";
+  if(!recsPayload.items[count].attributes.rating.rating){
+    recsPayload.items[count].attributes.rating.rating = "COMPLETED";
   }
 
-  if(!accessToken){
-    getAccessToken(postRecommendations);
-  } else {
-    postRecommendations();
-  }
+  async.series([
+    getAccessToken,
+    postRecommendations
+  ]);
+
+  // if(!accessToken){
+  //   getAccessToken(postRecommendations);
+  // } else {
+  //   postRecommendations();
+  // }
 
   count++;
   player.status.story = storyArray[count];
@@ -96,6 +102,7 @@ nprModule.getRecommendations = function(socket){
           }
         };
 
+        ////////////////
         request(options, function(err, response, body){
           if(err){
             console.log('Error getting recommendations:', err);
@@ -121,9 +128,10 @@ nprModule.getRecommendations = function(socket){
             });
             writePLSFile(filename, storyArray);
             // res.send(body);
-            socket.emit('npr recommendations', storyArray);
+            socket.emit('npr recommendations', recsPayload);
           }
         });
+        ///////////////
       }
     });
   })
@@ -156,19 +164,24 @@ function openPlaylist(){
 }
 
 function getAccessToken(cb){
-  User.find({}, function(err, users){
-    if(err){
-      console.log('Error grabbing token');
-      res.sendStatus(401);
-    } else {
-      console.log('Got npr token');
-      accessToken = users[0].npr_token;
-      cb();
-    }
-  });
+  if(accessToken){
+    cb(null, accessToken);
+  } else {
+    User.find({}, function(err, users){
+      if(err){
+        console.log('Error grabbing token');
+        res.sendStatus(401);
+      } else {
+        console.log('Got npr token');
+        accessToken = users[0].npr_token;
+        cb(null, accessToken);
+        //return accessToken;
+      }
+    });
+  }
 }
 
-function postRecommendations(){
+function postRecommendations(cb){
   var options = {
     type: 'POST',
     url: 'https://api.npr.org/listening/v2/ratings?',
@@ -176,15 +189,19 @@ function postRecommendations(){
       "Accept": "application/json",
       "Authorization": "Authorization=Bearer " + accessToken
     },
+    json: true,
     body: recsPayload
   };
 
   request(options, function(err, response, body){
     if(err){
       console.log('error posting recommendations:', err);
+      cb(err);
     } else {
       console.log('posted recommendations');
-
+      cb(null);
     }
   });
 }
+
+// function
