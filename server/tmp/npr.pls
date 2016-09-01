@@ -1,29 +1,20 @@
 [playlist]
-File1=http://download.npr.org/npr-mp4/nprone/hello/bitterthings2/112.mp4
-Title1=MPR
+File1=http://app.npr.org/npr-mp4/nprone/hello/20140418_npr1_hellos_amidst1.mp4
+Title1=NPR
 
-File2=http://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/08/30/newscastShort160625.mp3
+File2=http://ondemand.npr.org/anon.npr-mp3/npr/newscasts/2016/09/01/newscastShort120630.mp3
 Title2=National Newscast
 
-File3=http://cpa.ds.npr.org/newscasts/111/2016/08/111-newscast-2016-08-30T16-12-00.mp4
-Title3=Local Newscast
+File3=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/09/20160901_me_athlete_activists_arent_new_kaepernick_is_just_the_latest.mp3?orgId=1&topicId=1055&d=235&p=3&story=492203109&t=progseg&e=492203066&seg=13&NPROne=true
+Title3=Athlete Activists Aren't New. Kaepernick Is Just The Latest
 
-File4=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/08/20160830_me_opioid_epidemic_prompts_police_to_help_rather_than_arrest_drug_users.mp3?orgId=329&topicId=1091&d=229&p=3&story=491906530&t=progseg&e=491904413&seg=17&NPROne=true
-Title4=Opioid Epidemic Moves Police To Help Rather Than Arrest Drug Users
+File4=http://ondemand.npr.org/anon.npr-mp3/npr/atc/2016/08/20160830_atc_their_masters_voices_dogs_understand_tone_and_meaning_of_words.mp3?orgId=1&topicId=1128&d=159&p=2&story=491935800&t=progseg&e=491916660&seg=3&NPROne=true
+Title4=Their Masters' Voices: Dogs Understand Tone And Meaning Of Words
 
-File5=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/08/20160830_me_researchers_test_the_effects_of_background_music_on_people.mp3?orgId=1&topicId=1024&d=126&p=3&story=491906495&t=progseg&e=491904413&seg=8&NPROne=true
-Title5=Researchers Test The Effects Of Background Music On People
+File5=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/09/20160901_me_poll_most_americans_want_congress_to_make_zika_funding_a_high_priority.mp3?orgId=1&topicId=1128&d=176&p=3&story=492103236&t=progseg&e=492203066&seg=7&NPROne=true
+Title5=POLL: Most Americans Want Congress To Make Zika Funding A High Priority
 
-File6=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/08/20160830_me_a_new_school_year_brings_renewed_focus_on_attendance.mp3?orgId=1&topicId=1013&d=179&p=3&story=491810422&t=progseg&e=491904413&seg=15&NPROne=true
-Title6=A New School Year Brings Renewed Focus On Attendance
+File6=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/09/20160901_me_trump_delivers_immigration_policy_speech_in_arizaon.mp3?orgId=1&topicId=1014&d=522&p=3&story=492203102&t=progseg&e=492203066&seg=11&NPROne=true
+Title6=Donald Trump Delivers Immigration Policy Speech In Arizona
 
-File7=http://pd.npr.org/anon.npr-mp3/mpr/media/2016/08/2016_08_30_jane_monheit_honors_ella_fitzgerald.mp3?NPROne=true
-Title7=Jane Monheit honors Ella Fitzgerald
-
-File8=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/08/20160830_me_incumbents_poised_for_big_wins_despite_all_the_attention_on_outsiders.mp3?orgId=1&topicId=1014&d=225&p=3&story=491807412&t=progseg&e=491904413&seg=10&NPROne=true
-Title8=Incumbents Poised For Big Wins Despite All The Attention On Outsiders
-
-File9=http://ondemand.npr.org/anon.npr-mp3/npr/me/2016/08/20160830_me_the_curious_deaths_of_kremlin_critics.mp3?orgId=1&topicId=1004&d=393&p=3&story=491898040&t=progseg&e=491904413&seg=11&NPROne=true
-Title9=The Curious Deaths Of Kremlin Critics
-
-NumberOfEntries=10
+NumberOfEntries=7

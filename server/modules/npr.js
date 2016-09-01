@@ -63,6 +63,7 @@ nprModule.openPlaylist = function(socket){
 };
 
 nprModule.command = function(socket){
+  nprSocket = socket;
   socket.on('npr command', function(data){
     console.log('npr command:', data.cmd);
     switch(data.cmd){
@@ -84,6 +85,7 @@ nprModule.command = function(socket){
 };
 
 nprModule.like = function(socket){
+  nprSocket = socket;
   socket.on('npr like', function(data){
     recsRatings[count].elapsed = Number(player.status.position);
     recsRatings[count].rating = "THUMBUP";
@@ -95,6 +97,7 @@ nprModule.like = function(socket){
 };
 
 nprModule.getRecommendations = function(socket){
+  nprSocket = socket;
   socket.on('get npr recommendations', function(data){
     async.series([
       getAccessToken,
@@ -167,6 +170,35 @@ function postRecommendations(cb){
       cb(err);
     } else {
       // console.log('posted recommendations.', body);
+      // body = JSON.parse(body);
+      recsObject = body;
+      recs = body.items;
+
+      // run through and grab all links
+      storyArray = [];
+      recs.map(function(story){
+        recsRatings.push(story.attributes.rating);
+        var title = '';
+        if(story.attributes.title){
+          title = story.attributes.title;
+        }
+        var href = story.links.audio[0].href;
+        if(href.includes('https')){
+          href = href.replace('https', 'http');
+        }
+        var tmp = {
+          href: href,
+          type: story.links.audio[0]['content-type'],
+          title: title // include the story's title if there is one
+        }
+        if(story.attributes.rating.rating === 'START'){
+          storyArray.push(tmp);
+        }
+      });
+      writePLSFile(filename, storyArray);
+      // res.send(body);
+      //nprSocket.emit('npr recommendations', recsObject);
+
       if(nprSocket){
         nprSocket.emit('npr recommendations', recsRatings);
       }

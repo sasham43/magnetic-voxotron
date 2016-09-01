@@ -21,7 +21,8 @@ passport.use('npr', new OAuth2Strategy({
 }, function(accessToken, refreshToken, profile, done){
   process.nextTick(function(){
     // save access token
-    User.findOneAndUpdate({}, {npr_token: accessToken}, function(err, users){
+    // console.log('refreshToken:', accessToken, refreshToken, profile, done);
+    User.findOneAndUpdate({}, {npr_token: accessToken, npr_refresh: refreshToken}, function(err, users){
       if(err){
         console.log('Error saving npr token:', err);
       } else {
