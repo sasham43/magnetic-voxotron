@@ -19,8 +19,16 @@ var filename = './server/tmp/npr.pls';
 
 var nprSocket;
 
+player.on('status', function(){
+  if(nprSocket){
+    nprSocket.emit('npr status', player.status);
+  }
+});
+
 player.on('stop', function(){
   console.log('story over, playing next.');
+
+  recsRatings[count].timestamp = new Date().toISOString();
 
   if(skipped){
     skipped = false;
@@ -31,14 +39,22 @@ player.on('stop', function(){
     recsRatings[count].rating = "COMPLETED";
   }
 
+  // move on to next story
+  count++;
+  player.status.count = count;
+  player.status.story = storyArray[count];
+  player.openFile(storyArray[count].href);
+
+  // add start rating, send it in, and get new recommendations
+  recsRatings.push(recsObject.items[count].attributes.rating);
+  recsRatings[count].timestamp = new Date().toISOString();
+  recsRatings[count].rating = "START";
+
   async.series([
     getAccessToken,
     postRecommendations
   ]);
 
-  count++;
-  player.status.count = count;
-  player.status.story = storyArray[count];
   if(nprSocket){
     // wait one second to allow mplayer status to update it self -- yes this sucks
     setTimeout(function(){
@@ -164,45 +180,27 @@ function postRecommendations(cb){
     body: JSON.stringify(recsRatings)
   };
 
+  if(nprSocket){
+    nprSocket.emit('npr recommendations', recsRatings);
+  }
+  console.log('recsRatings', recsRatings);
+
   request(options, function(err, response, body){
     if(err){
       console.log('error posting recommendations:', err);
-      cb(err);
+      if(cb){
+        cb(err);
+      }
     } else {
-      // console.log('posted recommendations.', body);
-      // body = JSON.parse(body);
       recsObject = body;
       recs = body.items;
 
-      // run through and grab all links
-      storyArray = [];
-      recs.map(function(story){
-        recsRatings.push(story.attributes.rating);
-        var title = '';
-        if(story.attributes.title){
-          title = story.attributes.title;
-        }
-        var href = story.links.audio[0].href;
-        if(href.includes('https')){
-          href = href.replace('https', 'http');
-        }
-        var tmp = {
-          href: href,
-          type: story.links.audio[0]['content-type'],
-          title: title // include the story's title if there is one
-        }
-        if(story.attributes.rating.rating === 'START'){
-          storyArray.push(tmp);
-        }
-      });
-      writePLSFile(filename, storyArray);
-      // res.send(body);
-      //nprSocket.emit('npr recommendations', recsObject);
-
       if(nprSocket){
-        nprSocket.emit('npr recommendations', recsRatings);
+        nprSocket.emit('npr recommendations', body);
       }
-      cb(null);
+      if(cb){
+        cb(null);
+      }
     }
   });
 }
@@ -225,11 +223,11 @@ function getRecommendations(cb){
       console.log('got NPR recommendations.');
       body = JSON.parse(body); // parse response
       recsObject = body;
-      recs = body.items;
+      //recs = body.items;
 
       // run through and grab all links
-      recs.map(function(story){
-        recsRatings.push(story.attributes.rating);
+      recsObject.items.map(function(story){
+        //recsRatings.push(story.attributes.rating);
         var title = '';
         if(story.attributes.title){
           title = story.attributes.title;
@@ -245,7 +243,19 @@ function getRecommendations(cb){
         }
         storyArray.push(tmp);
       });
-      writePLSFile(filename, storyArray);
+      //writePLSFile(filename, storyArray);
+
+      // start playing
+      player.openFile(storyArray[0].href);
+
+      // begin building rating data array
+      recsRatings.push(recsObject.items[0].attributes.rating);
+      recsRatings[count].timestamp = new Date().toISOString();
+      recsRatings[0].rating = "START";
+
+      // send in start rating
+      postRecommendations();
+
       // res.send(body);
       nprSocket.emit('npr recommendations', recsObject);
       cb(null);

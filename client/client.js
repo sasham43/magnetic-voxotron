@@ -89,7 +89,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($
 angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'NowPlayingFactory', function($http, $scope, NowPlayingFactory){
   var nc = this;
 
-  nc.playing = true;
+  nc.playing = false;
   NowPlayingFactory.nprPlaying = nc.playing;
   nc.story = {};
 
