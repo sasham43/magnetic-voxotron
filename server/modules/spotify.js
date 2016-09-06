@@ -5,11 +5,12 @@ var spotifyPass = process.env.SPOTIFY_PASS;
 var io = require('../server.js').io;
 
 // configure spotify
+var playlist = {};
+var player = {};
 var ready = function(){
-  console.log('spotify play loaded.');
-  // playlist = spotify.playlistContainer.numPlaylists;
-  var track = spotify.createFromLink('spotify:track:05JqOBN6XW4eFUVQlgR0I3');
-  player.play(track);
+  console.log('spotify play loaded.', spotify);
+  playlist = spotify.playlistContainer.getPlaylist(0);
+  player = spotify.player;
 };
 
 spotify.on({
@@ -19,26 +20,22 @@ spotify.on({
 spotify.login(spotifyUser, spotifyPass, false, false);
 
 var spotifyModule = {};
-var playlist = {};
-
-
-
-// var playlist = spotify.playlistContainer.getPlaylist(0);
-var player = spotify.player;
+var status = {};
 
 spotifyModule.emitStatus = function(socket){
   socket.on('get spotify status', function(data){
-    // console.log('spotify status', spotify.player);
-    //logFile(spotify);
-    for (prop in spotify){
-      console.log('spotify:', prop);
-      if(prop === 'sessionUser'){
-        console.log('sessionuser:', spotify[prop]);
-      }
+    if(playlist){
+      status.playlist = playlist;
     }
-    socket.emit('spotify status', player);
+    // if(player){
+    //   status.player = player;
+    // }
+
+    socket.emit('spotify status', {data: status.playlist});
     // console.log('spotify status', spotify.playlistContainer);
   });
 };
+
+// spotifyModule.command
 
 module.exports = spotifyModule;
