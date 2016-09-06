@@ -1,4 +1,11 @@
 <h2>Spotify</h2>
+<div class="spotify-playlist-container">
+  <ul>
+    <li ng-repeat="playlistName in sc.playlistNames track by $index">
+      {{playlistName}}
+    </li>
+  </ul>
+</div>
 <button ng-click="sc.status()">status</button>
 <button ng-click="sc.cmd('play')">play</button>
 <button ng-click="sc.cmd('next')">next</button>

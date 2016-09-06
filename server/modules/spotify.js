@@ -8,20 +8,29 @@ var io = require('../server.js').io;
 var playlist = {};
 var player = {};
 var spotifySocket = {};
+var spotifyModule = {};
+var status = {};
 var tracks = [];
+var playlistNames = [];
+
 var ready = function(err){
   if(err) {
       console.log('spotify login failed:', err);
   } else {
-    console.log('spotify play loaded.');
     var myPlaylistContainer = spotify.playlistContainer;
     var numPlaylists = myPlaylistContainer.numPlaylists;
-    //var playlist = myPlaylistContainer.getPlaylist(5);
     var allPlaylists = myPlaylistContainer.getPlaylists();
-    playlist = allPlaylists[0];
+    playlist = allPlaylists[0]; // temporary
     tracks = playlist.getTracks();
     player = spotify.player;
-    console.log('playlist:', tracks);
+    allPlaylists.map(function(playlist){
+      playlistNames.push(playlist.name);
+    });
+    status.playlistNames = playlistNames;
+    if(spotifySocket){
+      spotifySocket.emit('spotify status', status);
+    }
+    console.log('spotify play loaded.');
   }
 };
 
@@ -31,20 +40,20 @@ spotify.on({
 
 spotify.login(spotifyUser, spotifyPass, false, false);
 
-var spotifyModule = {};
-var status = {};
-
 spotifyModule.emitStatus = function(socket){
   spotifySocket = socket;
   socket.on('get spotify status', function(data){
-    if(playlist){
-      status.playlist = playlist;
+    // if(playlist){
+    //   status.playlist = playlist;
+    // }
+    if(playlistNames){
+      status.playlistNames = playlistNames;
     }
     // if(player){
     //   status.player = player;
     // }
 
-    socket.emit('spotify status', {data: status.playlist});
+    socket.emit('spotify status', status);
     // console.log('spotify status', spotify.playlistContainer);
   });
 };
