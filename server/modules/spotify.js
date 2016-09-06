@@ -11,9 +11,12 @@ var spotifySocket;
 var spotifyModule = {};
 var status = {};
 status.playing = false;
+status.tracks = [];
+status.trackNumber = 0;
 var allPlaylists;
 var myPlaylistContainer;
-var tracks = [];
+// var tracks = [];
+
 var playlistNames = [];
 
 var ready = function(err){
@@ -25,12 +28,31 @@ var ready = function(err){
     playlist = allPlaylists[0]; // temporary
     tracks = playlist.getTracks();
     player = spotify.player;
+
+    // attach end of track function to player
+    player.on({endOfTrack: function(){
+      console.log('spotify track finished.');
+      status.trackNumber++;
+      if(status.trackNumber < tracks.length){
+        console.log('next track:', tracks[status.trackNumber]);
+        var track = spotify.createFromLink(tracks[status.trackNumber].link);
+        player.play(track);
+        status.playing = true;
+        spotifySocket.emit('spotify status', status);
+      } else {
+        console.log('spotify playlist finished.');
+        status.playing = false;
+        spotifySocket.emit('spotify status', status);
+      }
+    }
+  });
+
+    // make list of names and send to client
     allPlaylists.map(function(playlist){
       playlistNames.push(playlist.name);
     });
     status.playlistNames = playlistNames;
     if(spotifySocket){
-      console.log('spotifySocket', spotifySocket);
       spotifySocket.emit('spotify status', status);
     }
     console.log('spotify play loaded.');
@@ -71,6 +93,8 @@ spotifyModule.command = function(socket){
         player.pause();
         break;
     }
+
+    socket.emit('spotify status', status);
   });
 };
 
