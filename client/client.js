@@ -71,13 +71,24 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', 'NowPla
   console.log('now playing controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', function($http, $scope){
+angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 'NowPlayingFactory', function($http, $scope, NowPlayingFactory){
   var sc = this;
 
   sc.playlistNames = [];
+  sc.showPlaylistContainer = true;
+  sc.playing = false;
+
+  sc.togglePlaylistContainer = function(){
+    sc.showPlaylistContainer = !sc.showPlaylistContainer;
+  };
 
   sc.cmd = function(cmd){
+    console.log('spotify command:', cmd);
     socket.emit('spotify command', cmd);
+  };
+
+  sc.selectPlaylist = function(index){
+    socket.emit('spotify select playlist', {index: index});
   };
 
   socket.on('spotify status', function(data){

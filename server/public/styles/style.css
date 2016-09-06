@@ -109,13 +109,17 @@ a:nth-child(5){
   padding: .5em;
 }
 
-/*.npr-controls:nth-child(first){
-  margin-left: auto;
+.spotify-playlist-container{
+  height: 50vh;
+  overflow: scroll;
+  margin-bottom: 1em;
 }
 
-.npr-controls:nth-child(last){
-  margin-right: auto;
-}*/
+.spotify-playlist-btn{
+  width: 90vw;
+  height: auto;
+  font-size: 1.5em;
+}
 
 @media (min-width: 960px) {
   .container{

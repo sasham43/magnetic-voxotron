@@ -22,6 +22,9 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
 io.on('connection', function(socket){
+  socket.on('error', function(err){
+    console.log('socket error:', err);
+  });
   console.log('socket connected.');
   nprModule.emitStatus(socket);
   nprModule.command(socket);
@@ -30,6 +33,7 @@ io.on('connection', function(socket){
 
   spotifyModule.emitStatus(socket);
   spotifyModule.command(socket);
+  spotifyModule.playlistSelect(socket);
 });
 
 // express config

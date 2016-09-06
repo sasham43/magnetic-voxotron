@@ -7,9 +7,12 @@ var io = require('../server.js').io;
 // configure spotify
 var playlist = {};
 var player = {};
-var spotifySocket = {};
+var spotifySocket;
 var spotifyModule = {};
 var status = {};
+status.playing = false;
+var allPlaylists;
+var myPlaylistContainer;
 var tracks = [];
 var playlistNames = [];
 
@@ -17,9 +20,8 @@ var ready = function(err){
   if(err) {
       console.log('spotify login failed:', err);
   } else {
-    var myPlaylistContainer = spotify.playlistContainer;
-    var numPlaylists = myPlaylistContainer.numPlaylists;
-    var allPlaylists = myPlaylistContainer.getPlaylists();
+    myPlaylistContainer = spotify.playlistContainer;
+    allPlaylists = myPlaylistContainer.getPlaylists();
     playlist = allPlaylists[0]; // temporary
     tracks = playlist.getTracks();
     player = spotify.player;
@@ -28,6 +30,7 @@ var ready = function(err){
     });
     status.playlistNames = playlistNames;
     if(spotifySocket){
+      console.log('spotifySocket', spotifySocket);
       spotifySocket.emit('spotify status', status);
     }
     console.log('spotify play loaded.');
@@ -43,15 +46,12 @@ spotify.login(spotifyUser, spotifyPass, false, false);
 spotifyModule.emitStatus = function(socket){
   spotifySocket = socket;
   socket.on('get spotify status', function(data){
-    // if(playlist){
-    //   status.playlist = playlist;
-    // }
     if(playlistNames){
       status.playlistNames = playlistNames;
     }
-    // if(player){
-    //   status.player = player;
-    // }
+    if(player){
+      status.player = player;
+    }
 
     socket.emit('spotify status', status);
     // console.log('spotify status', spotify.playlistContainer);
@@ -62,17 +62,43 @@ spotifyModule.command = function(socket){
   spotifySocket = socket;
 
   socket.on('spotify command', function(data){
-    console.log('spotify command:', tracks[0].link);
-    switch(data){
+    console.log('spotify command:', data);
+    switch(data.cmd){
       case 'play':
-        var track = spotify.createFromLink(tracks[0].link);
-        player.play(track);
+        spotifyPlay(data.track);
         break;
       case 'next':
         player.pause();
         break;
     }
   });
-}
+};
+
+spotifyModule.playlistSelect = function(socket){
+  spotifySocket = socket;
+  socket.on('spotify select playlist', function(data){
+    console.log('spotify select playlist:', data);
+    playlist = allPlaylists[data.index]; // temporary
+    tracks = playlist.getTracks();
+    socket.emit('spotify status', status);
+  });
+};
 
 module.exports = spotifyModule;
+
+function spotifyPlay(index){
+  if (!status.playing && (player.currentSecond !== 0) ){
+  //  console.log('spotify resume', status.playing, player.currentSecond);
+   player.resume();
+   status.playing = true;
+  } else if(status.playing){
+    // console.log('spotify pause', status.playing, player.currentSecond);
+    player.pause();
+    status.playing = false;
+  } else {
+    // console.log('spotify play new');
+    var track = spotify.createFromLink(tracks[index].link);
+    player.play(track);
+    status.playing = true;
+  }
+}

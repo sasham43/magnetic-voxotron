@@ -16,6 +16,15 @@ module.exports = function(grunt){
         dest: 'server/public/vendor'
       }
     },
+    watch: {
+      scripts: {
+        files: ['client/client.js'],
+        tasks: ['uglify', 'copy'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
