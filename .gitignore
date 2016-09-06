@@ -6,3 +6,4 @@ npm-debug.log
 server/tmp/npr.pls
 server/modules/spotify_appkey.key
 cache
+settings
