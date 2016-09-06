@@ -29,6 +29,7 @@ io.on('connection', function(socket){
   nprModule.getRecommendations(socket);
 
   spotifyModule.emitStatus(socket);
+  spotifyModule.command(socket);
 });
 
 // express config

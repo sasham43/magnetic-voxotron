@@ -74,8 +74,16 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', 'NowPla
 angular.module('MagVoxApp').controller('SpotifyController', ['$http', function($http){
   var sc = this;
 
+  sc.cmd = function(cmd){
+    socket.emit('spotify command', cmd);
+  };
+
   socket.on('spotify status', function(data){
     console.log('spotify status', data);
+  });
+
+  socket.on('spotify playlist', function(data){
+    console.log('spotify playlist', data);
   });
 
   sc.status = function(){
