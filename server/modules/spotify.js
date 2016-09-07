@@ -11,11 +11,11 @@ var spotifySocket;
 var spotifyModule = {};
 var status = {};
 status.playing = false;
-status.tracks = [];
+status.trackList = [];
 status.trackNumber = 0;
 var allPlaylists;
 var myPlaylistContainer;
-// var tracks = [];
+var tracks = [];
 
 var playlistNames = [];
 
@@ -26,7 +26,9 @@ var ready = function(err){
     myPlaylistContainer = spotify.playlistContainer;
     allPlaylists = myPlaylistContainer.getPlaylists();
     playlist = allPlaylists[0]; // temporary
+    // status.tracks = playlist.getTracks();
     tracks = playlist.getTracks();
+    // status.tracks = tracks;
     player = spotify.player;
 
     // attach end of track function to player
@@ -87,11 +89,18 @@ spotifyModule.command = function(socket){
     console.log('spotify command:', data);
     switch(data.cmd){
       case 'play':
-        spotifyPlay(data.track);
+        spotifyPlayPause();
+        // status.trackNumber = data.track;
         break;
       case 'next':
-        player.pause();
+        spotifyNext();
         break;
+      case 'select':
+        spotifyPlay(data.track);
+        // status.trackNumber = data.track;
+        break;
+      default:
+        console.log('unrecognized command.');
     }
 
     socket.emit('spotify status', status);
@@ -104,25 +113,44 @@ spotifyModule.playlistSelect = function(socket){
     console.log('spotify select playlist:', data);
     playlist = allPlaylists[data.index]; // temporary
     tracks = playlist.getTracks();
+
+    tracks.map(function(track){
+      status.trackList.push(track.name);
+    });
+
     socket.emit('spotify status', status);
   });
 };
 
 module.exports = spotifyModule;
 
-function spotifyPlay(index){
+function spotifyPlayPause(){
   if (!status.playing && (player.currentSecond !== 0) ){
-  //  console.log('spotify resume', status.playing, player.currentSecond);
+   console.log('spotify resume', status.playing, player.currentSecond);
    player.resume();
    status.playing = true;
   } else if(status.playing){
-    // console.log('spotify pause', status.playing, player.currentSecond);
+    console.log('spotify pause', status.playing, player.currentSecond);
     player.pause();
     status.playing = false;
   } else {
-    // console.log('spotify play new');
-    var track = spotify.createFromLink(tracks[index].link);
+    console.log('spotify play new');
+    var track = spotify.createFromLink(tracks[status.trackNumber].link);
     player.play(track);
     status.playing = true;
   }
+}
+
+function spotifyPlay(index){
+  var track = spotify.createFromLink(tracks[index].link);
+  player.play(track);
+  status.playing = true;
+  status.trackNumber = index;
+}
+
+function spotifyNext(){
+  status.trackNumber++;
+  var track = spotify.createFromLink(tracks[status.trackNumber].link);
+  player.play(track);
+  status.playing = true;
 }

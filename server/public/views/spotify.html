@@ -7,6 +7,13 @@
     </li>
   </ul>
 </div>
+<div class="spotify-tracklist" ng-show="sc.showTrackList">
+  <ul>
+    <li ng-repeat="track in sc.trackList">
+      <button class="spotify-playlist-btn" ng-click="sc.cmd({cmd: 'select', track: $index})">{{track}}</button>
+    </li>
+  </ul>
+</div>
 <button ng-click="sc.status()">status</button>
 <button ng-click="sc.cmd({cmd: 'play', track: 0})">play</button>
-<button ng-click="sc.cmd('next')">next</button>
+<button ng-click="sc.cmd({cmd: 'next'})">next</button>
