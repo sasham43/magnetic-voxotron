@@ -121,6 +121,12 @@ a:nth-child(5){
   font-size: 1.5em;
 }
 
+.spotify-tracklist{
+  height: 50vh;
+  overflow: scroll;
+  margin-bottom: 1em;
+}
+
 @media (min-width: 960px) {
   .container{
     width: 95%;

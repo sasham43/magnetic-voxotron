@@ -113,6 +113,7 @@ spotifyModule.playlistSelect = function(socket){
     console.log('spotify select playlist:', data);
     playlist = allPlaylists[data.index]; // temporary
     tracks = playlist.getTracks();
+    status.trackList = []; // empty out tracklist for new playlist
 
     tracks.map(function(track){
       status.trackList.push(track.name);

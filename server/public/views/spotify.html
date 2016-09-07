@@ -1,18 +1,14 @@
 <h2>Spotify</h2>
-<h3 ng-click="sc.togglePlaylistContainer()">Playlists</h3>
+<div>
+  <button class="spotify-back-btn" ng-show="sc.showTrackList" ng-click="sc.back()">back</button>
+  <h3 ng-show="sc.showPlaylistContainer">Playlists</h3>
+  <h3 ng-show="sc.showTrackList">Tracks</h3>
+</div>
 <div class="spotify-playlist-container" ng-show="sc.showPlaylistContainer">
-  <ul>
-    <li ng-repeat="playlistName in sc.playlistNames track by $index">
-      <button class="spotify-playlist-btn" ng-click="sc.selectPlaylist($index)">{{playlistName}}</button>
-    </li>
-  </ul>
+  <button ng-repeat="playlistName in sc.playlistNames track by $index" class="spotify-playlist-btn" ng-click="sc.selectPlaylist($index)">{{playlistName}}</button>
 </div>
 <div class="spotify-tracklist" ng-show="sc.showTrackList">
-  <ul>
-    <li ng-repeat="track in sc.trackList">
-      <button class="spotify-playlist-btn" ng-click="sc.cmd({cmd: 'select', track: $index})">{{track}}</button>
-    </li>
-  </ul>
+  <button ng-repeat="track in sc.trackList" class="spotify-playlist-btn" ng-click="sc.cmd({cmd: 'select', track: $index})">{{track}}</button>
 </div>
 <button ng-click="sc.status()">status</button>
 <button ng-click="sc.cmd({cmd: 'play', track: 0})">play</button>

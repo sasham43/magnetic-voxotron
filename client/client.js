@@ -81,15 +81,17 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   sc.trackNumber = 0;
   sc.playing = false;
 
-  sc.togglePlaylistContainer = function(){
-    sc.showPlaylistContainer = !sc.showPlaylistContainer;
+  // sc.togglePlaylistContainer = function(){
+  //   sc.showPlaylistContainer = !sc.showPlaylistContainer;
+  // };
+
+  sc.back = function(){
+    sc.showTrackList = false;
+    sc.showPlaylistContainer = true;
   };
 
   sc.cmd = function(cmd){
     console.log('spotify command:', cmd);
-    // if(cmd.cmd === 'next'){
-    //   cmd.track = sc.trackNumber++;
-    // }
     socket.emit('spotify command', cmd);
   };
 
