@@ -65,69 +65,129 @@ player.on('stop', function(){
   }
 });
 
-var nprModule = {};
+module.exports = nprModule = {
+  emitStatus: function(socket){
+    nprSocket = socket;
+    socket.on('get npr status', function(data){
+      socket.emit('npr status', player.status);
+    });
+  },
 
-nprModule.emitStatus = function(socket){
-  nprSocket = socket;
-  socket.on('get npr status', function(data){
-    socket.emit('npr status', player.status);
-  });
+  openPlaylist: function(socket){
+    nprSocket = socket;
+    socket.on('go', openPlaylist);
+  },
+
+  command: function(socket){
+    nprSocket = socket;
+    socket.on('npr command', function(data){
+      console.log('npr command:', data.cmd);
+      switch(data.cmd){
+        case 'play':
+          nprPlay();
+          break;
+        case 'pause':
+          player.pause();
+          break;
+        case 'next':
+          nprNext();
+          break;
+        case 'rewind':
+          nprRewind();
+          break;
+      }
+      socket.emit('npr status', player.status);
+    });
+  },
+
+  like: function(socket){
+    nprSocket = socket;
+    socket.on('npr like', function(data){
+      recsRatings[count].elapsed = Number(player.status.position);
+      recsRatings[count].rating = "THUMBUP";
+      async.series([
+        getAccessToken,
+        postRecommendations
+      ]);
+    });
+  },
+
+  getRecommendations: function(socket){
+    nprSocket = socket;
+    socket.on('get npr recommendations', function(data){
+      async.series([
+        getAccessToken,
+        getRecommendations
+      ]);
+    });
+  },
+
+  cancel: function(){
+    player.pause();
+  }
 };
-
-nprModule.openPlaylist = function(socket){
-  nprSocket = socket;
-  socket.on('go', openPlaylist);
-};
-
-nprModule.command = function(socket){
-  nprSocket = socket;
-  socket.on('npr command', function(data){
-    console.log('npr command:', data.cmd);
-    switch(data.cmd){
-      case 'play':
-        nprPlay();
-        break;
-      case 'pause':
-        player.pause();
-        break;
-      case 'next':
-        nprNext();
-        break;
-      case 'rewind':
-        nprRewind();
-        break;
-    }
-    socket.emit('npr status', player.status);
-  });
-};
-
-nprModule.like = function(socket){
-  nprSocket = socket;
-  socket.on('npr like', function(data){
-    recsRatings[count].elapsed = Number(player.status.position);
-    recsRatings[count].rating = "THUMBUP";
-    async.series([
-      getAccessToken,
-      postRecommendations
-    ]);
-  });
-};
-
-nprModule.getRecommendations = function(socket){
-  nprSocket = socket;
-  socket.on('get npr recommendations', function(data){
-    async.series([
-      getAccessToken,
-      getRecommendations
-    ]);
-  });
-};
-
-nprModule.cancel = function(){
-  player.pause();
-};
-
-module.exports = nprModule;
+//
+// nprModule.emitStatus = function(socket){
+//   nprSocket = socket;
+//   socket.on('get npr status', function(data){
+//     socket.emit('npr status', player.status);
+//   });
+// };
+//
+// nprModule.openPlaylist = function(socket){
+//   nprSocket = socket;
+//   socket.on('go', openPlaylist);
+// };
+//
+// nprModule.command = function(socket){
+//   nprSocket = socket;
+//   socket.on('npr command', function(data){
+//     console.log('npr command:', data.cmd);
+//     switch(data.cmd){
+//       case 'play':
+//         nprPlay();
+//         break;
+//       case 'pause':
+//         player.pause();
+//         break;
+//       case 'next':
+//         nprNext();
+//         break;
+//       case 'rewind':
+//         nprRewind();
+//         break;
+//     }
+//     socket.emit('npr status', player.status);
+//   });
+// };
+//
+// nprModule.like = function(socket){
+//   nprSocket = socket;
+//   socket.on('npr like', function(data){
+//     recsRatings[count].elapsed = Number(player.status.position);
+//     recsRatings[count].rating = "THUMBUP";
+//     async.series([
+//       getAccessToken,
+//       postRecommendations
+//     ]);
+//   });
+// };
+//
+// nprModule.getRecommendations = function(socket){
+//   nprSocket = socket;
+//   socket.on('get npr recommendations', function(data){
+//     async.series([
+//       getAccessToken,
+//       getRecommendations
+//     ]);
+//   });
+// };
+//
+// nprModule.cancel = function(){
+//   player.pause();
+// };
+//
+// module.exports = nprModule;
 
 function writePLSFile(filename, arr){
   var plsString = '[playlist]\n';

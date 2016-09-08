@@ -129,6 +129,10 @@ module.exports = spotifyModule = {
   }
 };
 
+exports.cancel =  function(){
+  player.pause();
+};
+
 // spotifyModule.;
 //
 // spotifyModule.;

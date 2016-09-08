@@ -4,7 +4,7 @@ var nprCancel = require('./npr.js').cancel;
 var cancelOthers = function(service){
   console.log('cancelling other services:', this);
   if(service !== 'spotify'){
-    spotifyCancel();
+    spotifyCancel.cancel();
   }
   if(service !== 'npr'){
     nprCancel();
