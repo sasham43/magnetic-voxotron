@@ -93,6 +93,10 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   //   sc.showPlaylistContainer = !sc.showPlaylistContainer;
   // };
 
+  sc.loader = function(){
+    return sc.playlistNames.length == 0;
+  };
+
   sc.back = function(){
     sc.showTrackList = false;
     sc.showPlaylistContainer = true;
