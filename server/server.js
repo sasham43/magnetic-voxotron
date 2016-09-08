@@ -11,21 +11,22 @@ var mongoose = require('mongoose');
 var routes = require('./routes');
 var spotifyModule = require('./modules/spotify.js');
 var nprModule = require('./modules/npr.js');
-// console.log('npr module:', nprModule);
+
+// test
+require('./modules/test.js')();
 
 var app = express();
 
 // set up server & socket
 var server = http.Server(app);
 var io = require('socket.io')(server);
-// module.exports.io = io;
 var port = process.env.PORT || 3000;
 
 io.on('connection', function(socket){
   socket.on('error', function(err){
     console.log('socket error:', err);
   });
-  console.log('socket connected.');
+  console.log('socket connected.', spotifyModule.cancel);
   nprModule.emitStatus(socket);
   nprModule.command(socket);
   nprModule.openPlaylist(socket);

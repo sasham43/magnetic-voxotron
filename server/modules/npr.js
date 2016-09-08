@@ -5,6 +5,7 @@ var io = require('../server.js').io;
 var fs = require('fs');
 var Mplayer = require('mplayer');
 var async = require('async');
+var controls = require('./control.js');
 var player = new Mplayer();
 
 var accessToken = '';
@@ -120,6 +121,10 @@ nprModule.getRecommendations = function(socket){
       getRecommendations
     ]);
   });
+};
+
+nprModule.cancel = function(){
+  player.pause();
 };
 
 module.exports = nprModule;
@@ -247,6 +252,7 @@ function getRecommendations(cb){
 
       // start playing
       player.openFile(storyArray[0].href);
+      controls.cancelOther('npr');
 
       // begin building rating data array
       recsRatings.push(recsObject.items[0].attributes.rating);
@@ -286,4 +292,5 @@ function nprRewind(){
 
 function nprPlay(){
   player.status.playing ? player.pause() : player.play();
+  controls.cancelOther('npr');
 }

@@ -3,12 +3,12 @@ var spotify = require('node-spotify')({appkeyFile: './server/modules/spotify_app
 var spotifyUser = process.env.SPOTIFY_USER;
 var spotifyPass = process.env.SPOTIFY_PASS;
 var io = require('../server.js').io;
+var controls = require('./control.js');
 
 // configure spotify
 var playlist = {};
 var player = {};
 var spotifySocket;
-var spotifyModule = {};
 var status = {};
 status.playing = false;
 status.trackList = [];
@@ -67,63 +67,77 @@ spotify.on({
 
 spotify.login(spotifyUser, spotifyPass, false, false);
 
-spotifyModule.emitStatus = function(socket){
-  spotifySocket = socket;
-  socket.on('get spotify status', function(data){
-    if(playlistNames){
-      status.playlistNames = playlistNames;
-    }
-    if(player){
-      status.player = player;
-    }
+module.exports = spotifyModule = {
+  emitStatus: function(socket){
+    spotifySocket = socket;
+    socket.on('get spotify status', function(data){
+      if(playlistNames){
+        status.playlistNames = playlistNames;
+      }
+      if(player){
+        status.player = player;
+      }
 
-    socket.emit('spotify status', status);
-    // console.log('spotify status', spotify.playlistContainer);
-  });
-};
-
-spotifyModule.command = function(socket){
-  spotifySocket = socket;
-
-  socket.on('spotify command', function(data){
-    console.log('spotify command:', data);
-    switch(data.cmd){
-      case 'play':
-        spotifyPlayPause();
-        // status.trackNumber = data.track;
-        break;
-      case 'next':
-        spotifyNext();
-        break;
-      case 'select':
-        spotifyPlay(data.track);
-        // status.trackNumber = data.track;
-        break;
-      default:
-        console.log('unrecognized command.');
-    }
-
-    socket.emit('spotify status', status);
-  });
-};
-
-spotifyModule.playlistSelect = function(socket){
-  spotifySocket = socket;
-  socket.on('spotify select playlist', function(data){
-    console.log('spotify select playlist:', data);
-    playlist = allPlaylists[data.index]; // temporary
-    tracks = playlist.getTracks();
-    status.trackList = []; // empty out tracklist for new playlist
-
-    tracks.map(function(track){
-      status.trackList.push(track.name);
+      socket.emit('spotify status', status);
+      // console.log('spotify status', spotify.playlistContainer);
     });
+  },
 
-    socket.emit('spotify status', status);
-  });
+  command: function(socket){
+    spotifySocket = socket;
+
+    socket.on('spotify command', function(data){
+      console.log('spotify command:', data);
+      switch(data.cmd){
+        case 'play':
+          spotifyPlayPause();
+          // status.trackNumber = data.track;
+          break;
+        case 'next':
+          spotifyNext();
+          break;
+        case 'select':
+          spotifyPlay(data.track);
+          // status.trackNumber = data.track;
+          break;
+        default:
+          console.log('unrecognized command.');
+      }
+
+      socket.emit('spotify status', status);
+    });
+  },
+
+  playlistSelect: function(socket){
+    spotifySocket = socket;
+    socket.on('spotify select playlist', function(data){
+      console.log('spotify select playlist:', data);
+      playlist = allPlaylists[data.index]; // temporary
+      tracks = playlist.getTracks();
+      status.trackList = []; // empty out tracklist for new playlist
+
+      tracks.map(function(track){
+        status.trackList.push(track.name);
+      });
+
+      socket.emit('spotify status', status);
+    });
+  },
+
+  cancel: function(){
+    player.pause();
+  }
 };
 
-module.exports = spotifyModule;
+// spotifyModule.;
+//
+// spotifyModule.;
+//
+// spotifyModule.;
+//
+// spotifyModule.
+
+//module.exports = spotifyModule;
 
 function spotifyPlayPause(){
   if (!status.playing && (player.currentSecond !== 0) ){
@@ -139,6 +153,8 @@ function spotifyPlayPause(){
     var track = spotify.createFromLink(tracks[status.trackNumber].link);
     player.play(track);
     status.playing = true;
+    // console.log('spotify control:', controls);
+    // controls.cancelOther('spotify');
   }
 }
 
@@ -147,6 +163,8 @@ function spotifyPlay(index){
   player.play(track);
   status.playing = true;
   status.trackNumber = index;
+  // console.log('spotify control:', this);
+  controls.cancelOther('spotify');
 }
 
 function spotifyNext(){
