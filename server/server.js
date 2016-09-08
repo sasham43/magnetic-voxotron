@@ -75,5 +75,5 @@ app.get('/*', routes.index);
 
 // start listening
 server.listen(port, function(){
-  console.log('Server listening on port ' + port + '...');
+  console.log('server listening on port ' + port + '...');
 });

@@ -55,18 +55,24 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', 'NowPla
   npc.cdPlaying = NowPlayingFactory.cdPlaying;
 
   npc.currentService = '';
-  if(npc.nprPlaying){
-    npc.currentService = 'NPR';
-  }
-  if(npc.spotifyPlaying){
-    npc.currentService = 'Spotify';
-  }
-  if(npc.cdPlaying){
-    npc.currentService = 'CD';
-  }
-  if(!npc.nprPlaying && !npc.spotifyPlaying && !npc.cdPlaying){
-    npc.currentService = 'Nothing Selected';
-  }
+
+  npc.checkService = function(){
+    if(npc.nprPlaying){
+      npc.currentService = 'NPR';
+    }
+    if(npc.spotifyPlaying){
+      npc.currentService = 'Spotify';
+    }
+    if(npc.cdPlaying){
+      npc.currentService = 'CD';
+    }
+    if(!npc.nprPlaying && !npc.spotifyPlaying && !npc.cdPlaying){
+      npc.currentService = 'Nothing Selected';
+    }
+    console.log('current service:', npc.currentService, NowPlayingFactory.spotifyPlaying);
+  };
+
+  npc.checkService();
 
   console.log('now playing controller loaded.');
 }]);
@@ -80,6 +86,8 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   sc.showTrackList = false;
   sc.trackNumber = 0;
   sc.playing = false;
+
+  NowPlayingFactory.spotifyPlaying = sc.playing;
 
   // sc.togglePlaylistContainer = function(){
   //   sc.showPlaylistContainer = !sc.showPlaylistContainer;
@@ -107,6 +115,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
       sc.playlistNames = data.playlistNames;
       sc.trackList = data.trackList;
       sc.trackNumber = data.trackNumber;
+      NowPlayingFactory.spotifyPlaying = data.playing;
     });
   });
 
@@ -143,7 +152,8 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
     console.log('npr status:', data);
     $scope.$apply(
       nc.playing = data.playing,
-      nc.story = data.story
+      nc.story = data.story,
+      NowPlayingFactory.nprPlaying = nc.playing
     );
   });
 
