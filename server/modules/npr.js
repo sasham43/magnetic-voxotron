@@ -5,8 +5,15 @@ var io = require('../server.js').io;
 var fs = require('fs');
 var Mplayer = require('mplayer');
 var async = require('async');
+var nprSDK = require('npr-one-sdk').default;
 var controls = require('./control.js');
 var player = new Mplayer();
+
+
+// nprSDK.accessToken = 'qBFtNUx5QwlD5gZT8RIA8Ml7ozWtqw1TynXbY7Gl'
+var nprOne = new nprSDK();
+
+console.log('npr sdk:', nprSDK.config, nprOne);
 
 var accessToken = '';
 var recs = [];
@@ -126,68 +133,6 @@ module.exports = nprModule = {
     player.pause();
   }
 };
-//
-// nprModule.emitStatus = function(socket){
-//   nprSocket = socket;
-//   socket.on('get npr status', function(data){
-//     socket.emit('npr status', player.status);
-//   });
-// };
-//
-// nprModule.openPlaylist = function(socket){
-//   nprSocket = socket;
-//   socket.on('go', openPlaylist);
-// };
-//
-// nprModule.command = function(socket){
-//   nprSocket = socket;
-//   socket.on('npr command', function(data){
-//     console.log('npr command:', data.cmd);
-//     switch(data.cmd){
-//       case 'play':
-//         nprPlay();
-//         break;
-//       case 'pause':
-//         player.pause();
-//         break;
-//       case 'next':
-//         nprNext();
-//         break;
-//       case 'rewind':
-//         nprRewind();
-//         break;
-//     }
-//     socket.emit('npr status', player.status);
-//   });
-// };
-//
-// nprModule.like = function(socket){
-//   nprSocket = socket;
-//   socket.on('npr like', function(data){
-//     recsRatings[count].elapsed = Number(player.status.position);
-//     recsRatings[count].rating = "THUMBUP";
-//     async.series([
-//       getAccessToken,
-//       postRecommendations
-//     ]);
-//   });
-// };
-//
-// nprModule.getRecommendations = function(socket){
-//   nprSocket = socket;
-//   socket.on('get npr recommendations', function(data){
-//     async.series([
-//       getAccessToken,
-//       getRecommendations
-//     ]);
-//   });
-// };
-//
-// nprModule.cancel = function(){
-//   player.pause();
-// };
-//
-// module.exports = nprModule;
 
 function writePLSFile(filename, arr){
   var plsString = '[playlist]\n';
@@ -206,13 +151,18 @@ function writePLSFile(filename, arr){
 }
 
 function openPlaylist(){
-  //console.log('wrote pls file', player);
-  player.openPlaylist(filename, {
-      cache: 128,
-      cacheMin: 1,
-      pause: 0
-  });
-  player.status.story = storyArray[0];
+  console.log('about to get rec sdk');
+  nprOne.getRecommendation()
+    .then(function(recommendation){
+      console.log('npr sdk rec:', recommendation);
+    });
+  // //console.log('wrote pls file', player);
+  // player.openPlaylist(filename, {
+  //     cache: 128,
+  //     cacheMin: 1,
+  //     pause: 0
+  // });
+  // player.status.story = storyArray[0];
 }
 
 function getAccessToken(cb){
@@ -224,8 +174,15 @@ function getAccessToken(cb){
         console.log('error grabbing token');
         res.sendStatus(401);
       } else {
-        console.log('got npr token.');
         accessToken = users[0].npr_token;
+        nprSDK.config = {
+          accessToken: accessToken,
+          authProxyBaseUrl: 'http://localhost:3000/auth/npr'
+        }
+        // nprSDK.accessToken = accessToken;
+
+        // nprOne = new nprSDK();
+        console.log('got npr token.', nprSDK.config);
         cb(null, accessToken);
         //return accessToken;
       }
@@ -271,62 +228,12 @@ function postRecommendations(cb){
 }
 
 function getRecommendations(cb){
-  var options = {
-    url: 'https://api.npr.org/listening/v2/recommendations?channel=npr',
-    headers: {
-      "Accept": "application/json",
-      "Authorization": "Authorization=Bearer " + accessToken
-    }
-  };
-
-  request(options, function(err, response, body){
-    if(err){
-      console.log('error getting npr recommendations:', err);
-      res.sendStatus(400);
-      cb(err);
-    } else {
-      console.log('got NPR recommendations.');
-      body = JSON.parse(body); // parse response
-      recsObject = body;
-      //recs = body.items;
-
-      // run through and grab all links
-      recsObject.items.map(function(story){
-        //recsRatings.push(story.attributes.rating);
-        var title = '';
-        if(story.attributes.title){
-          title = story.attributes.title;
-        }
-        var href = story.links.audio[0].href;
-        if(href.includes('https')){
-          href = href.replace('https', 'http');
-        }
-        var tmp = {
-          href: href,
-          type: story.links.audio[0]['content-type'],
-          title: title // include the story's title if there is one
-        }
-        storyArray.push(tmp);
-      });
-      //writePLSFile(filename, storyArray);
-
-      // start playing
-      player.openFile(storyArray[0].href);
-      controls.cancelOther('npr');
-
-      // begin building rating data array
-      recsRatings.push(recsObject.items[0].attributes.rating);
-      recsRatings[count].timestamp = new Date().toISOString();
-      recsRatings[0].rating = "START";
-
-      // send in start rating
-      postRecommendations();
-
-      // res.send(body);
-      nprSocket.emit('npr recommendations', recsObject);
-      cb(null);
-    }
-  });
+  var nprOne = new nprSDK();
+  console.log('about to get sdk rec', nprOne);
+  nprOne.getRecommendation()
+    .then(function(recommendation){
+      console.log('npr sdk rec:', recommendation);
+    }, function(err){console.log('fail fail fail', err)});
 }
 
 function nprNext(){

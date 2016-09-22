@@ -13,7 +13,7 @@ var spotifyModule = require('./modules/spotify.js');
 var nprModule = require('./modules/npr.js');
 
 // test
-require('./modules/test.js')();
+// require('./modules/test.js')();
 
 var app = express();
 
@@ -26,7 +26,7 @@ io.on('connection', function(socket){
   socket.on('error', function(err){
     console.log('socket error:', err);
   });
-  console.log('socket connected.', spotifyModule.cancel);
+  console.log('socket connected.');
   nprModule.emitStatus(socket);
   nprModule.command(socket);
   nprModule.openPlaylist(socket);
