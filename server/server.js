@@ -29,7 +29,6 @@ io.on('connection', function(socket){
   console.log('socket connected.');
   nprModule.emitStatus(socket);
   nprModule.command(socket);
-  nprModule.openPlaylist(socket);
   nprModule.getRecommendations(socket);
 
   spotifyModule.emitStatus(socket);
