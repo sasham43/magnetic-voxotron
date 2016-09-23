@@ -17,11 +17,11 @@ var playing = false;
 var skipped = false;
 var nprSocket;
 
-player.on('status', function(){
-  if(nprSocket){
-    nprSocket.emit('npr status', player.status);
-  }
-});
+// player.on('status', function(){
+//   if(nprSocket){
+//     nprSocket.emit('npr status', player.status);
+//   }
+// });
 
 player.on('stop', function(){
   console.log('story over, playing next.');
@@ -36,6 +36,9 @@ module.exports = nprModule = {
   emitStatus: function(socket){
     nprSocket = socket;
     socket.on('get npr status', function(data){
+      if(rec){
+        player.status.title = rec.attributes.title;        
+      }
       socket.emit('npr status', player.status);
     });
   },
@@ -66,12 +69,6 @@ module.exports = nprModule = {
     nprSocket = socket;
     socket.on('npr like', function(data){
       rec.recordAction(nprSDK.Action.THUMBUP, player.status.position);
-      // recsRatings[count].elapsed = Number(player.status.position);
-      // recsRatings[count].rating = "THUMBUP";
-      // async.series([
-      //   getAccessToken,
-      //   postRecommendations
-      // ]);
     });
   },
 
@@ -132,11 +129,17 @@ function playRec(recommendation){
 
   player.openFile(href);
 
-  console.log('npr play rec:', href);
+  player.status.title = rec.attributes.title;
+
+  if(nprSocket){
+    nprSocket.emit('npr status', player.status);
+  }
+
+  console.log('npr play rec:', rec.attributes.title);
 }
 
 function nprNext(){
-  console.log('next story:');
+  console.log('next story');
   player.seekPercent(100);
 }
 

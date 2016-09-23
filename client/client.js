@@ -142,7 +142,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
 
   nc.playing = false;
   NowPlayingFactory.nprPlaying = nc.playing;
-  nc.story = {};
+  nc.title;
 
   socket.on('connected', function(data){
     console.log('socket connected.');
@@ -156,7 +156,7 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
     console.log('npr status:', data);
     $scope.$apply(
       nc.playing = data.playing,
-      nc.story = data.story,
+      nc.title = data.title,
       NowPlayingFactory.nprPlaying = nc.playing
     );
   });
@@ -166,12 +166,6 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
   });
 
   nc.go = function(){
-    // $http.get('/npr/go').then(function(response){
-    //   console.log('npr recs:', response);
-    //   socket.emit('go'); // start playing
-    // }).then(function(response){
-    //   //console.log('npr go fail:', response);
-    // });
     socket.emit('get npr recommendations');
   };
 
@@ -188,8 +182,8 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'Now
     socket.emit('npr like');
   };
 
-  // get recommendations
-  //nc.go();
+  // get status
+  nc.status();
   console.log('npr controller loaded.');
 }]);
 
