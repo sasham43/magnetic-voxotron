@@ -12,6 +12,7 @@ var player = new Mplayer();
 var nprOne = new nprSDK();
 
 var rec;
+var started = false;
 var accessToken = '';
 var playing = false;
 var skipped = false;
@@ -37,7 +38,7 @@ module.exports = nprModule = {
     nprSocket = socket;
     socket.on('get npr status', function(data){
       if(rec){
-        player.status.title = rec.attributes.title;        
+        player.status.title = rec.attributes.title;
       }
       socket.emit('npr status', player.status);
     });
@@ -60,6 +61,9 @@ module.exports = nprModule = {
         case 'rewind':
           nprRewind();
           break;
+        case 'like':
+          nprLike();
+          break;
       }
       socket.emit('npr status', player.status);
     });
@@ -75,6 +79,7 @@ module.exports = nprModule = {
   getRecommendations: function(socket){
     nprSocket = socket;
     socket.on('get npr recommendations', function(data){
+      started = true;
       async.series([
         getAccessToken,
         getRecommendations
@@ -130,6 +135,7 @@ function playRec(recommendation){
   player.openFile(href);
 
   player.status.title = rec.attributes.title;
+  player.status.started = started;
 
   if(nprSocket){
     nprSocket.emit('npr status', player.status);
@@ -154,4 +160,8 @@ function nprRewind(){
 function nprPlay(){
   player.status.playing ? player.pause() : player.play();
   controls.cancelOther('npr');
+}
+
+function nprLike(){
+  rec.recordAction(nprSDK.Action.THUMBUP, player.status.position);
 }

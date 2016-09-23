@@ -104,10 +104,17 @@ a:nth-child(5){
   }
 }
 
+.npr-controls{
+  /*text-align: center;*/
+}
+
 .npr-play{
   font-size: 2em;
   height: auto;
   padding: .5em;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .npr-title{

@@ -3,8 +3,7 @@
 <div class="spinner-icon" ng-class="{'spinner-spin': nc.playing, 'spinner-red': true}">
 
 </div>
-<button class="three columns" ng-click="nc.go()">go</button>
-<div class="npr-controls row">
+<!-- <div class="npr-controls row">
   <button class="npr-play three columns offset-by-one" ng-click="nc.cmd('rewind')">rewind</button>
   <button class="npr-play three columns" ng-click="nc.cmd('play')">
     <span ng-show="!nc.playing">play</span>
@@ -14,4 +13,13 @@
 </div>
 <div class="row">
   <button class="npr-play three columns" ng-click="nc.like()">like</button>
+</div> -->
+<div class="npr-controls row">
+  <button class="npr-play" ng-click="nc.go()">
+    <span ng-show="!nc.playing">play</span>
+    <span ng-show="nc.playing">pause</span>
+  </button>
+  <button class="npr-play" ng-click="nc.cmd('rewind')">rewind</button>
+  <button class="npr-play" ng-click="nc.cmd('next')">next</button>
+  <button class="npr-play" ng-click="nc.cmd('like')">like</button>
 </div>
