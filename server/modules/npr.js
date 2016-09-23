@@ -9,11 +9,9 @@ var nprSDK = require('npr-one-sdk').default;
 var controls = require('./control.js');
 var player = new Mplayer();
 
-
-// nprSDK.accessToken = 'qBFtNUx5QwlD5gZT8RIA8Ml7ozWtqw1TynXbY7Gl'
 var nprOne = new nprSDK();
 
-console.log('npr sdk:', nprSDK.config, nprOne);
+var rec;
 
 var accessToken = '';
 var recs = [];
@@ -36,40 +34,10 @@ player.on('status', function(){
 player.on('stop', function(){
   console.log('story over, playing next.');
 
-  recsRatings[count].timestamp = new Date().toISOString();
+  rec.recordAction(nprSDK.Action.COMPLETED, rec.attributes.duration);
 
-  if(skipped){
-    skipped = false;
-    recsRatings[count].elapsed = Number(player.status.position);
-    recsRatings[count].rating = "SKIP";
-  } else {
-    recsRatings[count].elapsed = recsRatings[count].duration;
-    recsRatings[count].rating = "COMPLETED";
-  }
-
-  // move on to next story
-  count++;
-  player.status.count = count;
-  player.status.story = storyArray[count];
-  player.openFile(storyArray[count].href);
-
-  // add start rating, send it in, and get new recommendations
-  recsRatings.push(recsObject.items[count].attributes.rating);
-  recsRatings[count].timestamp = new Date().toISOString();
-  recsRatings[count].rating = "START";
-
-  async.series([
-    getAccessToken,
-    postRecommendations
-  ]);
-
-  if(nprSocket){
-    // wait one second to allow mplayer status to update it self -- yes this sucks
-    setTimeout(function(){
-      console.log('emitting status...');
-      nprSocket.emit('npr status', player.status);
-    }, 1000);
-  }
+  nprOne.getRecommendation()
+    .then(playRec)
 });
 
 module.exports = nprModule = {
@@ -178,10 +146,8 @@ function getAccessToken(cb){
         nprSDK.config = {
           accessToken: accessToken,
           authProxyBaseUrl: 'http://localhost:3000/auth/npr'
-        }
-        // nprSDK.accessToken = accessToken;
+        };
 
-        // nprOne = new nprSDK();
         console.log('got npr token.', nprSDK.config);
         cb(null, accessToken);
         //return accessToken;
@@ -228,12 +194,36 @@ function postRecommendations(cb){
 }
 
 function getRecommendations(cb){
-  var nprOne = new nprSDK();
-  console.log('about to get sdk rec', nprOne);
+  // var nprOne = new nprSDK();
+  console.log('about to get sdk rec');
   nprOne.getRecommendation()
-    .then(function(recommendation){
-      console.log('npr sdk rec:', recommendation);
-    }, function(err){console.log('fail fail fail', err)});
+    .then(playRec)
+    // .then(playRec)
+    // .then(playRec)
+    // .then(playRec)
+    // .then(playRec)
+    // .then(playRec)
+    // .then(playRec)
+    // .then(playRec)
+    .catch(function(err){
+      console.log('error getting npr recommendations:', err);
+    });
+
+}
+
+function playRec(recommendation){
+  rec = recommendation;
+  var href = recommendation.getAudio()[0].href;
+  if(href.includes('https')){
+    href = href.replace('https', 'http');
+  }
+  recommendation.recordAction(nprSDK.Action.START, 0);
+
+  player.openFile(href);
+
+  console.log('npr play rec:', href);
+
+
 }
 
 function nprNext(){
