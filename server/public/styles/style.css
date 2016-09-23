@@ -65,6 +65,8 @@ a:nth-child(5){
 
 .auth-link{
   font-size: 4em;
+  display: block;
+  
 }
 
 .spinner-red{
