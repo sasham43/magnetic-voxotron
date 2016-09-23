@@ -98,7 +98,7 @@ router.get('/npr/refresh', function(req, res){
               res.sendStatus(500);
             } else {
               console.log('Saved new npr tokens', users);
-              res.sendStatus(200);
+              res.redirect('/npr')
             }
           });
         }

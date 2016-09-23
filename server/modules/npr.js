@@ -146,6 +146,7 @@ function playRec(recommendation){
 
 function nprNext(){
   console.log('next story');
+  rec.recordAction(nprSDK.Action.SKIP, player.status.position);
   player.seekPercent(100);
 }
 
