@@ -81,6 +81,7 @@ a:nth-child(5){
 
 .nav-label{
   margin-top: 1em;
+  font-size: 2em;
 }
 
 .auth-link{
