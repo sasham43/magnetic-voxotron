@@ -72,11 +72,7 @@ a:nth-child(5){
 }
 
 .nav-box{
-  /*display: inline-block;
-  width: 18vw;
-  height: 100%;
-  position: relative;
-  text-align: center;*/
+  text-align: center;
 }
 
 .nav-label{

@@ -18,14 +18,6 @@
     <base href="/">
   </head>
   <body class="container" ng-controller="IndexController as ic">
-    <button ng-click="ic.openNav()" class="nav-show">Menu</button>
-    <nav class="row" ng-click="ic.hideNav()" ng-show="ic.showNav">
-      <a class="nav-link" href="/">now playing</a>
-      <a class="nav-link" href="/cd">cd</a>
-      <a class="nav-link" href="/spotify">spotify</a>
-      <a class="nav-link" href="/npr">npr</a>
-      <a class="nav-link" href="/settings">settings</a>
-    </nav>
     <span class="heading">Welcome to the Marvelous, the Magnificent </span>
     <h1>Magnetic Voxotron!</h1>
     <ng-view></ng-view>

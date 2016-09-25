@@ -36,14 +36,6 @@ angular.module('MagVoxApp').config(['$routeProvider', '$locationProvider', funct
 angular.module('MagVoxApp').controller('IndexController', ['$http', '$location', function($http, $location){
   var ic = this;
 
-  ic.openNav = function(){
-    ic.showNav = !ic.showNav;
-  };
-
-  ic.hideNav = function(){
-    ic.showNav = false;
-  };
-
   // new nav
   ic.nav = function(href){
     $location.url(href);
