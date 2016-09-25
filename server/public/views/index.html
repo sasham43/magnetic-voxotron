@@ -6,6 +6,7 @@
 
     <!-- Libraries -->
     <link rel="stylesheet" href="vendor/skeleton-css/css/skeleton.css" />
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css" />
     <script src="vendor/socket.io-client/socket.io.js"></script>
     <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-route/angular-route.min.js"></script>
@@ -28,5 +29,33 @@
     <span class="heading">Welcome to the Marvelous, the Magnificent </span>
     <h1>Magnetic Voxotron!</h1>
     <ng-view></ng-view>
+    <div class="nav-bar row">
+      <div class="nav-box two columns offset-by-one" ng-click="ic.nav('/')">
+        <p class="nav-label">
+          now playing
+        </p>
+      </div>
+      <div class="nav-box two columns" ng-click="ic.nav('/cd')">
+        <i class="fa fa-music fa-5x" aria-hidden="true"></i>
+        <p class="nav-label">
+          cd player
+        </p>
+      </div>
+      <div class="nav-box two columns" ng-click="ic.nav('/spotify')">
+        <p class="nav-label">
+          spotify
+        </p>
+      </div>
+      <div class="nav-box two columns" ng-click="ic.nav('/npr')">
+        <p class="nav-label">
+          npr
+        </p>
+      </div>
+      <div class="nav-box two columns" ng-click="ic.nav('/settings')">
+        <p class="nav-label">
+          settings
+        </p>
+      </div>
+    </div>
   </body>
 </html>

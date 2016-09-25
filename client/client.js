@@ -33,7 +33,7 @@ angular.module('MagVoxApp').config(['$routeProvider', '$locationProvider', funct
     $locationProvider.html5Mode(true);
 }]);
 
-angular.module('MagVoxApp').controller('IndexController', ['$http', function($http){
+angular.module('MagVoxApp').controller('IndexController', ['$http', '$location', function($http, $location){
   var ic = this;
 
   ic.openNav = function(){
@@ -42,6 +42,11 @@ angular.module('MagVoxApp').controller('IndexController', ['$http', function($ht
 
   ic.hideNav = function(){
     ic.showNav = false;
+  };
+
+  // new nav
+  ic.nav = function(href){
+    $location.url(href);
   };
 
   console.log('index controller loaded.');
