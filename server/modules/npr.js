@@ -41,6 +41,7 @@ module.exports = nprModule = {
         player.status.title = rec.attributes.title;
       }
       socket.emit('npr status', player.status);
+      // console.log('npr status', player.status);
     });
   },
 

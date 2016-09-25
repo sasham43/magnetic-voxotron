@@ -79,7 +79,7 @@ module.exports = spotifyModule = {
       }
 
       socket.emit('spotify status', status);
-      // console.log('spotify status', spotify.playlistContainer);
+      // console.log('spotify status', status);
     });
   },
 
