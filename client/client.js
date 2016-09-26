@@ -96,6 +96,7 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', '$scope
     socket.emit('get npr status');
     socket.emit('get spotify status');
     // more sockets here
+    
     // if(npc.nprPlaying){
     //   npc.currentService = 'NPR';
     // }
@@ -116,7 +117,7 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', '$scope
   console.log('now playing controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 'NowPlayingFactory', function($http, $scope, NowPlayingFactory){
+angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', function($http, $scope){
   var sc = this;
 
   sc.playlistNames = [];
@@ -176,7 +177,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   console.log('spotify controller loaded.');
 }]);
 
-angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', 'NowPlayingFactory', function($http, $scope, NowPlayingFactory){
+angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', function($http, $scope){
   var nc = this;
 
   nc.playing = false;
@@ -235,14 +236,14 @@ angular.module('MagVoxApp').controller('SettingsController', ['$http', function(
   console.log('settings controller loaded.');
 }]);
 
-angular.module('MagVoxApp').factory('NowPlayingFactory', ['$http', function($http){
-  var nprPlaying = false;
-  var spotifyPlaying = false;
-  var cdPlaying = false;
-
-  return {
-    nprPlaying: nprPlaying,
-    spotifyPlaying: spotifyPlaying,
-    cdPlaying: cdPlaying
-  }
-}]);
+// angular.module('MagVoxApp').factory('NowPlayingFactory', ['$http', function($http){
+//   var nprPlaying = false;
+//   var spotifyPlaying = false;
+//   var cdPlaying = false;
+//
+//   return {
+//     nprPlaying: nprPlaying,
+//     spotifyPlaying: spotifyPlaying,
+//     cdPlaying: cdPlaying
+//   }
+// }]);

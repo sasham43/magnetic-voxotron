@@ -68,7 +68,7 @@ a:nth-child(5){
   position: absolute;
   width: 100vw;
   height: 9vh;
-  top: 90vh;
+  top: 84vh;
 }
 
 .nav-box{
@@ -208,12 +208,12 @@ a:nth-child(5){
     margin-left: auto;
   }
   h1{
-    font-size: 6em;
-  }
-  h2{
     font-size: 4em;
   }
-  h3{
+  h2{
     font-size: 3em;
+  }
+  h3{
+    font-size: 2em;
   }
 }

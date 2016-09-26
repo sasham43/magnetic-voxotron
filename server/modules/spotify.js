@@ -133,16 +133,6 @@ exports.cancel =  function(){
   player.pause();
 };
 
-// spotifyModule.;
-//
-// spotifyModule.;
-//
-// spotifyModule.;
-//
-// spotifyModule.
-
-//module.exports = spotifyModule;
-
 function spotifyPlayPause(){
   if (!status.playing && (player.currentSecond !== 0) ){
    console.log('spotify resume', status.playing, player.currentSecond);
