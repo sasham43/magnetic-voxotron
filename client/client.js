@@ -161,12 +161,19 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
     console.log('spotify playlist', data);
   });
 
+  socket.on('spotify albums', function(data){
+    $scope.$apply(function(){
+      sc.albumNames = data.albums
+    });
+  });
+
   sc.status = function(){
     console.log('getting spotify status');
     socket.emit('get spotify status');
   };
 
   sc.status();
+  socket.emit('spotify update albums');
 
   console.log('spotify controller loaded.');
 }]);

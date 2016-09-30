@@ -48,11 +48,12 @@ var spotifyStrategy = new SpotifyStrategy({
 }, function(accessToken, refreshToken, profile, done){
   process.nextTick(function(){
     // save access and refresh token
+    console.log('passport profile:', profile);
     User.findOneAndUpdate({}, {spotify_token: accessToken, spotify_refresh: refreshToken}, function(err, users){
       if(err){
         console.log('error saving spotify token:', err);
       } else {
-        console.log('saved spotify token.', users);
+        console.log('saved spotify token.');
       }
 
       return done(null, profile);

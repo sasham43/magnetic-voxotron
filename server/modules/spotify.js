@@ -1,4 +1,7 @@
 var router = require('express').Router();
+var async = require('async');
+var request = require('request');
+var User = require('../models/userModel');
 var spotify = require('node-spotify')({appkeyFile: './server/modules/spotify_appkey.key'});
 var spotifyUser = process.env.SPOTIFY_USER;
 var spotifyPass = process.env.SPOTIFY_PASS;
@@ -16,6 +19,8 @@ status.trackNumber = 0;
 var allPlaylists;
 var myPlaylistContainer;
 var tracks = [];
+var accessToken;
+var refreshToken;
 
 var playlistNames = [];
 
@@ -124,6 +129,17 @@ module.exports = spotifyModule = {
     });
   },
 
+  updateAlbums: function(socket){
+    spotifySocket = socket;
+    socket.on('spotify update albums', function(){
+      console.log('updating albums...');
+      async.series([
+        getAccessToken,
+        updateAlbums
+      ]);
+    });
+  },
+
   cancel: function(){
     player.pause();
   }
@@ -166,4 +182,134 @@ function spotifyNext(){
   var track = spotify.createFromLink(tracks[status.trackNumber].link);
   player.play(track);
   status.playing = true;
+}
+
+function getAccessToken(cb){
+  if(accessToken){
+    cb(null, accessToken);
+  } else {
+    User.find({}, function(err, users){
+      if(err){
+        console.log('error grabbing token');
+        res.sendStatus(401);
+      } else {
+        accessToken = users[0].spotify_token;
+        refreshToken = users[0].spotify_refresh;
+
+        console.log('got spotify token.');
+        cb(null, accessToken);
+        //return accessToken;
+      }
+    });
+  }
+}
+
+function updateAlbums(cb){
+  var albums = [];
+  var options = {
+    url: 'https://api.spotify.com/v1/me/albums?limit=50',
+    headers: {'Authorization': 'Bearer ' + accessToken}, // need to grab token
+    json: true
+  };
+
+  // recursively get all albums
+  var pages = 0;
+  var getAlbums = function(err, response, body){
+    if(err){
+      console.log('Error getting albums.');
+    }
+    console.log('Getting page', pages);
+    if(body.items){
+      body.items.map(function(album){
+        album = album.album;
+        var tracks = [];
+        album.tracks.items.map(function(track){
+          var temp = {
+            track_name: track.name,
+            index: track.track_number,
+            uri: track.uri
+          };
+          tracks.push(temp);
+        });
+        albums.push({
+          album_name: album.name,
+          album_tracks:tracks,
+          album_uri: album.uri,
+          album_images: {big: album.images[0].url, med: album.images[1].url, sml: album.images[2].url}
+        });
+      });
+      console.log('got spotify albums.');
+
+      if(pages == 0){
+        var pushAlbums = {spotify_albums:albums};
+        console.log('pages is 0');
+      } else {
+        var pushAlbums = {$push: {spotify_albums:{$each:albums}}};
+        console.log('pages is not 0')
+      }
+
+      // save albums to database
+      User.findOneAndUpdate({}, pushAlbums, function(err, users){
+        if(err){
+          console.log('error saving spotify albums:', err);
+        } else {
+          console.log('saved spotify albums.');
+          if(body.next){
+            var options = {
+              headers: {'Authorization': 'Bearer ' + accessToken}, // need to grab token
+              json: true
+            };
+            options.url = body.next;
+            pages++;
+            request.get(options, getAlbums);
+          } else {
+            // status.albums = albums;
+            spotifySocket.emit('spotify albums', {albums: albums});
+          }
+        }
+      });
+
+    } else if(body.error) {
+      console.log('Error.', body.error);
+      if(body.error.status == 401){
+        // get refresh token and start again
+        // console.log('secret secrets:', process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_CLIENT_SECRET);
+        var secret = process.env.SPOTIFY_CLIENT_SECRET;
+        var id = process.env.SPOTIFY_CLIENT_ID;
+        var buffer = Buffer(id + ':' + secret);
+        buffer = buffer.toString('base64');
+        var options = {
+          url: 'https://accounts.spotify.com/api/token',
+          form: {grant_type: 'refresh_token',refresh_token: refreshToken},
+          headers:{
+            'Authorization': 'Basic ' + buffer,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        };
+
+        request.post(options, function(err, response, body){
+          if(err){
+            console.log('error refreshing spotify token:', err);
+          }
+          console.log('refresh!', body);
+          User.findOneAndUpdate({}, {spotify_token: body.access_token}, function(err, users){
+            if(err){
+              console.log('error saving refreshed spotify token:', err);
+            } else {
+              accessToken = body.access_token;
+              console.log('saved refreshed spotify token.');
+              var options = {
+                url: 'https://api.spotify.com/v1/me/albums?limit=50',
+                headers: {'Authorization': 'Bearer ' + accessToken}, // need to grab token
+                json: true
+              };
+              request.get(options, getAlbums);
+            }
+          })
+        });
+      }
+      // res.send(body);
+    }
+  };
+  request.get(options, getAlbums);
 }
