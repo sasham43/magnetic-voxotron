@@ -2,7 +2,11 @@ var router = require('express').Router();
 var passport = require('passport');
 var request = require('request');
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var SpotifyStrategy = require('passport-spotify').Strategy;
 var User = require('../models/userModel');
+
+
+// NPR OAuth
 
 var nprScope = [
   'identity.readonly',
@@ -35,7 +39,29 @@ var nprStrategy = new OAuth2Strategy({
   });
 });
 
+// Spotify OAuth
+
+var spotifyStrategy = new SpotifyStrategy({
+  clientID: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  callbackURL: 'http://localhost:3000/auth/spotify/callback'
+}, function(accessToken, refreshToken, profile, done){
+  process.nextTick(function(){
+    // save access and refresh token
+    User.findOneAndUpdate({}, {spotify_token: accessToken, spotify_refresh: refreshToken}, function(err, users){
+      if(err){
+        console.log('error saving spotify token:', err);
+      } else {
+        console.log('saved spotify token.', users);
+      }
+
+      return done(null, profile);
+    });
+  });
+});
+
 passport.use('npr', nprStrategy);
+passport.use('spotify', spotifyStrategy);
 
 passport.serializeUser(function(user, done){
   done(null, user);
@@ -109,6 +135,20 @@ router.get('/npr/refresh', function(req, res){
 
 
 router.get('/npr/info', ensureAuthenticated, function(req, res){
+  res.send(req.user);
+});
+
+router.get('/spotify', passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-private', 'user-library-read'] }), function(req, res){
+  // does not get called, gets redirected
+});
+
+router.get('/spotify/callback', passport.authenticate('spotify', {failureRedirect: '/settings'}), function(req, res){
+  // success
+  console.log('successfully authenticated.', req.user);
+  res.redirect('/spotify');
+});
+
+router.get('/spotify/info', ensureAuthenticated, function(req, res){
   res.send(req.user);
 });
 

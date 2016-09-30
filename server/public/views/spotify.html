@@ -4,11 +4,22 @@
   <h3 ng-show="sc.showPlaylistContainer">Playlists</h3>
   <h3 ng-show="sc.showTrackList">Tracks</h3>
 </div>
+<div class="spotify-base-container" ng-show="sc.showBase">
+  <button ng-click="sc.select('playlist')">Playlists</button>
+  <button ng-click="sc.select('albums')">Albums</button>
+  <button ng-click="sc.select('artists')">Artists</button>
+</div>
 <div class="spotify-playlist-container twelve columns" ng-show="sc.showPlaylistContainer">
   <div class="loader" ng-show="sc.loader()">
     <span>loading</span><span id="dot1">.</span><span id="dot2">.</span><span id="dot3">.</span>
   </div>
-  <button ng-repeat="playlistName in sc.playlistNames track by $index" class="spotify-playlist-btn  twelve columns" ng-click="sc.selectPlaylist($index)">{{playlistName}}</button>
+  <button ng-repeat="playlistName in sc.playlistNames track by $index" class="spotify-playlist-btn twelve columns" ng-click="sc.selectPlaylist($index)">{{playlistName}}</button>
+</div>
+<div class="spotify-album-container" ng-show="sc.showAlbumContainer">
+  <button ng-repeat="albumName in sc.albumNames track by $index">{{albumName}}</button>
+</div>
+<div class="spotify-artist-container" ng-show="sc.showArtistContainer">
+  <button ng-repeat="artistName in sc.artistNames">{{artistName}}</button>
 </div>
 <div class="spotify-tracklist" ng-show="sc.showTrackList">
   <button ng-repeat="track in sc.trackList track by $index" class="spotify-playlist-btn" ng-click="sc.cmd({cmd: 'select', track: $index})">{{track}}</button>

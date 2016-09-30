@@ -4,7 +4,9 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
   username: String,
   npr_token: String,
-  npr_refresh: String
+  npr_refresh: String,
+  spotify_token: String,
+  spotify_refresh: String
 });
 
 var User = mongoose.model('User', userSchema);
