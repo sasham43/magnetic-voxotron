@@ -242,10 +242,10 @@ function updateAlbums(cb){
 
       if(pages == 0){
         var pushAlbums = {spotify_albums:albums};
-        console.log('pages is 0');
+        // console.log('pages is 0');
       } else {
         var pushAlbums = {$push: {spotify_albums:{$each:albums}}};
-        console.log('pages is not 0')
+        // console.log('pages is not 0')
       }
 
       // save albums to database
@@ -296,6 +296,7 @@ function updateAlbums(cb){
             if(err){
               console.log('error saving refreshed spotify token:', err);
             } else {
+              body = JSON.parse(body);
               accessToken = body.access_token;
               console.log('saved refreshed spotify token.');
               var options = {

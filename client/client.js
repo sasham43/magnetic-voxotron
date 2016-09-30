@@ -162,6 +162,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   });
 
   socket.on('spotify albums', function(data){
+    console.log('spotify albums:', data.albums);
     $scope.$apply(function(){
       sc.albumNames = data.albums
     });
