@@ -79,7 +79,7 @@ module.exports = spotifyModule = {
       }
 
       socket.emit('spotify status', status);
-      // console.log('spotify status', spotify.playlistContainer);
+      // console.log('spotify status', status);
     });
   },
 
@@ -132,16 +132,6 @@ module.exports = spotifyModule = {
 exports.cancel =  function(){
   player.pause();
 };
-
-// spotifyModule.;
-//
-// spotifyModule.;
-//
-// spotifyModule.;
-//
-// spotifyModule.
-
-//module.exports = spotifyModule;
 
 function spotifyPlayPause(){
   if (!status.playing && (player.currentSecond !== 0) ){

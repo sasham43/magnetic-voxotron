@@ -2,10 +2,12 @@
 <html lang="en" ng-app="MagVoxApp">
   <head>
     <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Magnetic Voxotron</title>
 
     <!-- Libraries -->
     <link rel="stylesheet" href="vendor/skeleton-css/css/skeleton.css" />
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css" />
     <script src="vendor/socket.io-client/socket.io.js"></script>
     <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-route/angular-route.min.js"></script>
@@ -16,17 +18,44 @@
 
     <base href="/">
   </head>
-  <body class="container" ng-controller="IndexController as ic">
-    <button ng-click="ic.openNav()" class="nav-show">Menu</button>
-    <nav class="row" ng-click="ic.hideNav()" ng-show="ic.showNav">
-      <a class="nav-link" href="/">now playing</a>
-      <a class="nav-link" href="/cd">cd</a>
-      <a class="nav-link" href="/spotify">spotify</a>
-      <a class="nav-link" href="/npr">npr</a>
-      <a class="nav-link" href="/settings">settings</a>
-    </nav>
-    <span class="heading">Welcome to the Marvelous, the Magnificent </span>
-    <h1>Magnetic Voxotron!</h1>
-    <ng-view></ng-view>
+  <body ng-controller="IndexController as ic">
+    <div class="container">
+      <div class="nav-bar row">
+        <div class="nav-box two columns offset-by-one" ng-click="ic.nav('/')">
+          <i class="fa fa-headphones fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            now playing
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/cd')">
+          <i class="fa fa-music fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            cd player
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/spotify')">
+          <i class="fa fa-spotify fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            spotify
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/npr')">
+          <i class="fa fa-feed fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            npr
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/settings')">
+          <i class="fa fa-cog fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            settings
+          </p>
+        </div>
+      </div>
+      <span class="heading">Welcome to the Marvelous, the Magnificent </span>
+      <h1>Magnetic Voxotron!</h1>
+      <ng-view></ng-view>
+    </div>
+
   </body>
 </html>

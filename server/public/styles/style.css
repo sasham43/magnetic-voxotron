@@ -63,10 +63,27 @@ a:nth-child(5){
   color: #eeeeee;
 }
 
+/*new nav bar*/
+.nav-bar{
+  /*position: absolute;*/
+  /*width: 100vw;*/
+  /*height: 9vh;*/
+  /*top: 84vh;*/
+}
+
+.nav-box{
+  text-align: center;
+}
+
+.nav-label{
+  margin-top: 1em;
+  font-size: 2em;
+}
+
 .auth-link{
   font-size: 4em;
   display: block;
-  
+
 }
 
 .spinner-red{
@@ -80,6 +97,9 @@ a:nth-child(5){
 }
 .spinner-black{
   border: solid 1px black;
+}
+.spinner-white{
+  border: solid 1px #ddd;
 }
 
 .spinner-icon{
@@ -130,7 +150,7 @@ a:nth-child(5){
 }
 
 .spotify-playlist-btn{
-  width: 90vw;
+  /*width: 90vw;*/
   height: auto;
   font-size: 1.5em;
 }
@@ -188,12 +208,12 @@ a:nth-child(5){
     margin-left: auto;
   }
   h1{
-    font-size: 6em;
-  }
-  h2{
     font-size: 4em;
   }
-  h3{
+  h2{
     font-size: 3em;
+  }
+  h3{
+    font-size: 2em;
   }
 }
