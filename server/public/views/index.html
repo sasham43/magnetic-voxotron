@@ -20,41 +20,42 @@
   </head>
   <body ng-controller="IndexController as ic">
     <div class="container">
+      <div class="nav-bar row">
+        <div class="nav-box two columns offset-by-one" ng-click="ic.nav('/')">
+          <i class="fa fa-headphones fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            now playing
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/cd')">
+          <i class="fa fa-music fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            cd player
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/spotify')">
+          <i class="fa fa-spotify fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            spotify
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/npr')">
+          <i class="fa fa-feed fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            npr
+          </p>
+        </div>
+        <div class="nav-box two columns" ng-click="ic.nav('/settings')">
+          <i class="fa fa-cog fa-4x" aria-hidden="true"></i>
+          <p class="nav-label">
+            settings
+          </p>
+        </div>
+      </div>
       <span class="heading">Welcome to the Marvelous, the Magnificent </span>
       <h1>Magnetic Voxotron!</h1>
       <ng-view></ng-view>
     </div>
-    <div class="nav-bar row">
-      <div class="nav-box two columns offset-by-one" ng-click="ic.nav('/')">
-        <i class="fa fa-headphones fa-4x" aria-hidden="true"></i>
-        <p class="nav-label">
-          now playing
-        </p>
-      </div>
-      <div class="nav-box two columns" ng-click="ic.nav('/cd')">
-        <i class="fa fa-music fa-4x" aria-hidden="true"></i>
-        <p class="nav-label">
-          cd player
-        </p>
-      </div>
-      <div class="nav-box two columns" ng-click="ic.nav('/spotify')">
-        <i class="fa fa-spotify fa-4x" aria-hidden="true"></i>
-        <p class="nav-label">
-          spotify
-        </p>
-      </div>
-      <div class="nav-box two columns" ng-click="ic.nav('/npr')">
-        <i class="fa fa-feed fa-4x" aria-hidden="true"></i>
-        <p class="nav-label">
-          npr
-        </p>
-      </div>
-      <div class="nav-box two columns" ng-click="ic.nav('/settings')">
-        <i class="fa fa-cog fa-4x" aria-hidden="true"></i>
-        <p class="nav-label">
-          settings
-        </p>
-      </div>
-    </div>
+
   </body>
 </html>

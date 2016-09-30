@@ -65,10 +65,10 @@ a:nth-child(5){
 
 /*new nav bar*/
 .nav-bar{
-  position: absolute;
-  width: 100vw;
-  height: 9vh;
-  top: 84vh;
+  /*position: absolute;*/
+  /*width: 100vw;*/
+  /*height: 9vh;*/
+  /*top: 84vh;*/
 }
 
 .nav-box{
