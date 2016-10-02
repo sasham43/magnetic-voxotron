@@ -223,7 +223,7 @@ function updateAlbums(cb){
 
   // recursively get all albums
   var pages = 0;
-  var getAlbums = function(err, response, body){
+  var getSpotifyAlbums = function(err, response, body){
     if(err){
       console.log('Error getting albums.');
     }
@@ -249,34 +249,26 @@ function updateAlbums(cb){
       });
       console.log('got spotify albums.');
 
-      if(pages == 0){
-        var pushAlbums = {spotify_albums:albums};
-        // console.log('pages is 0');
+      if(body.next){
+        var options = {
+          headers: {'Authorization': 'Bearer ' + accessToken}, // need to grab token
+          json: true
+        };
+        options.url = body.next;
+        pages++;
+        request.get(options, getSpotifyAlbums);
       } else {
-        var pushAlbums = {$push: {spotify_albums:{$each:albums}}};
-        // console.log('pages is not 0')
-      }
-
-      // save albums to database
-      User.findOneAndUpdate({}, pushAlbums, function(err, users){
-        if(err){
-          console.log('error saving spotify albums:', err);
-        } else {
-          console.log('saved spotify albums.');
-          if(body.next){
-            var options = {
-              headers: {'Authorization': 'Bearer ' + accessToken}, // need to grab token
-              json: true
-            };
-            options.url = body.next;
-            pages++;
-            request.get(options, getAlbums);
+        // status.albums = albums;
+        // spotifySocket.emit('spotify albums', {albums: albums});
+        User.findOneAndUpdate({}, {spotify_albums:albums}, function(err, users){
+          if(err){
+            console.log('error saving spotify albums:', err);
           } else {
-            // status.albums = albums;
+            console.log('saved spotify albums.');
             spotifySocket.emit('spotify albums', {albums: albums});
           }
-        }
-      });
+        });
+      }
 
     } else if(body.error) {
       console.log('Error.', body.error);
@@ -300,12 +292,12 @@ function updateAlbums(cb){
           if(err){
             console.log('error refreshing spotify token:', err);
           }
-          // console.log('refresh!', body);
+          body = JSON.parse(body);
+          // console.log('refresh!', body.access_token);
           User.findOneAndUpdate({}, {spotify_token: body.access_token}, function(err, users){
             if(err){
               console.log('error saving refreshed spotify token:', err);
             } else {
-              body = JSON.parse(body);
               accessToken = body.access_token;
               console.log('saved refreshed spotify token.');
               var options = {
@@ -313,7 +305,7 @@ function updateAlbums(cb){
                 headers: {'Authorization': 'Bearer ' + accessToken}, // need to grab token
                 json: true
               };
-              request.get(options, getAlbums);
+              request.get(options, getSpotifyAlbums);
             }
           })
         });
@@ -321,7 +313,7 @@ function updateAlbums(cb){
       // res.send(body);
     }
   };
-  request.get(options, getAlbums);
+  request.get(options, getSpotifyAlbums);
 }
 
 function getAlbums(){
