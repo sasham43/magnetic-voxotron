@@ -164,7 +164,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   socket.on('spotify albums', function(data){
     console.log('spotify albums:', data);
     $scope.$apply(function(){
-      sc.albumNames = data.albums
+      sc.albumNames = data.albumNames
     });
   });
 
