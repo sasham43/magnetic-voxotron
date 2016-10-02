@@ -35,6 +35,7 @@ io.on('connection', function(socket){
   spotifyModule.command(socket);
   spotifyModule.playlistSelect(socket);
   spotifyModule.updateAlbums(socket);
+  spotifyModule.getAlbums(socket);
 });
 
 // express config

@@ -16,6 +16,8 @@ var status = {};
 status.playing = false;
 status.trackList = [];
 status.trackNumber = 0;
+status.albumNames = [];
+var allAlbums;
 var allPlaylists;
 var myPlaylistContainer;
 var tracks = [];
@@ -137,6 +139,13 @@ module.exports = spotifyModule = {
         getAccessToken,
         updateAlbums
       ]);
+    });
+  },
+
+  getAlbums: function(socket){
+    spotifySocket = socket;
+    socket.on('spotify get albums', function(){
+      getAlbums();
     });
   },
 
@@ -291,7 +300,7 @@ function updateAlbums(cb){
           if(err){
             console.log('error refreshing spotify token:', err);
           }
-          console.log('refresh!', body);
+          // console.log('refresh!', body);
           User.findOneAndUpdate({}, {spotify_token: body.access_token}, function(err, users){
             if(err){
               console.log('error saving refreshed spotify token:', err);
@@ -313,4 +322,21 @@ function updateAlbums(cb){
     }
   };
   request.get(options, getAlbums);
+}
+
+function getAlbums(){
+  User.find({}, function(err, users){
+    if(err){
+      console.log('error getting spotify albums from db:', err);
+    } else {
+      allAlbums = users[0].spotify_albums;
+
+      allAlbums.map(function(album){
+        status.albumNames.push(album.album_name);
+      });
+
+      console.log('got spotify albums from db.');
+      spotifySocket.emit('spotify albums', {albumNames: status.albumNames, allAlbums: allAlbums});
+    }
+  });
 }

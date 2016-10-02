@@ -162,7 +162,7 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   });
 
   socket.on('spotify albums', function(data){
-    console.log('spotify albums:', data.albums);
+    console.log('spotify albums:', data);
     $scope.$apply(function(){
       sc.albumNames = data.albums
     });
@@ -174,7 +174,8 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   };
 
   sc.status();
-  socket.emit('spotify update albums');
+  // socket.emit('spotify update albums');
+  socket.emit('spotify get albums');
 
   console.log('spotify controller loaded.');
 }]);
@@ -233,5 +234,11 @@ angular.module('MagVoxApp').controller('CDController', ['$http', function($http)
 }]);
 
 angular.module('MagVoxApp').controller('SettingsController', ['$http', function($http){
+  var setc = this;
+
+  setc.updateSpotify = function(){
+    socket.emit('spotify update albums');
+  };
+
   console.log('settings controller loaded.');
 }]);
