@@ -133,6 +133,12 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
     sc.showTrackList = true;
   };
 
+  sc.selectAlbum = function(index){
+    socket.emit('spotify select album', {index: index});
+    sc.showAlbumContainer = false;
+    
+  };
+
   sc.select = function(str){
     sc.showBase = false;
     switch(str){

@@ -10,6 +10,7 @@ var controls = require('./control.js');
 
 // configure spotify
 var playlist = {};
+var album = {};
 var player = {};
 var spotifySocket;
 var status = {};
@@ -126,6 +127,18 @@ module.exports = spotifyModule = {
       tracks.map(function(track){
         status.trackList.push(track.name);
       });
+
+      socket.emit('spotify status', status);
+    });
+  },
+
+  albumSelect: function(socket){
+    spotifySocket = socket;
+    socket.on('spotify select album', function(data){
+      console.log('spotify select album:', data);
+      album = allAlbums[data.index];
+
+      status.trackList = album.tracks;
 
       socket.emit('spotify status', status);
     });

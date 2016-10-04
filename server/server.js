@@ -34,6 +34,7 @@ io.on('connection', function(socket){
   spotifyModule.emitStatus(socket);
   spotifyModule.command(socket);
   spotifyModule.playlistSelect(socket);
+  spotifyModule.albumSelect(socket);
   spotifyModule.updateAlbums(socket);
   spotifyModule.getAlbums(socket);
 });
