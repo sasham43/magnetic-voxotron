@@ -138,7 +138,10 @@ module.exports = spotifyModule = {
       console.log('spotify select album:', data);
       album = allAlbums[data.index];
 
-      status.trackList = album.tracks;
+      tracks = album.album_tracks;
+      tracks.map(function(track){
+        status.trackList.push(track.track_name);
+      });
 
       socket.emit('spotify status', status);
     });
@@ -335,6 +338,7 @@ function getAlbums(){
       console.log('error getting spotify albums from db:', err);
     } else {
       allAlbums = users[0].spotify_albums;
+      status.albumNames = [];
 
       allAlbums.map(function(album){
         status.albumNames.push(album.album_name);

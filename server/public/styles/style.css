@@ -21,6 +21,10 @@ h2, h3{
   text-align: center;
 }
 
+button{
+  color: #ccc;
+}
+
 .heading{
   color: chartreuse;
   text-shadow: 1px 1px 3px #333;
