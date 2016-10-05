@@ -1,13 +1,13 @@
 <h2>Spotify</h2>
 
 <!-- filter text -->
-<div class="spotify-filter-container">
-  <input type="text" class="spotify-filter" placeholder="filter..." ng-model="sc.filterText" />
+<div class="row spotify-filter-container">
+  <input type="text" class="eight columns offset-by-two spotify-filter" placeholder="filter..." ng-model="sc.filterText" />
 </div>
 
 <!-- album cover -->
-<div class="spotify-album-container" ng-show="sc.showAlbumContainer">
-  <mv-album album="album" ng-repeat="album in sc.albums"></mv-album>
+<div class="row spotify-album-container" ng-show="sc.showAlbumContainer">
+  <mv-album class="eight columns offset-by-two" album="album" ng-repeat="album in sc.albums"></mv-album>
 </div>
 <!-- {{sc.albums}} -->
 <!-- track list -->

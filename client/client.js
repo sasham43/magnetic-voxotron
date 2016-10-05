@@ -179,6 +179,10 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
     socket.emit('get spotify status');
   };
 
+  sc.selectAlbum = function(album){
+    console.log('spotify select album:', album);
+  };
+
   sc.status();
   // socket.emit('spotify update albums');
   socket.emit('spotify get albums');
