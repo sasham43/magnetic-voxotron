@@ -101,37 +101,37 @@ angular.module('MagVoxApp').controller('NowPlayingController', ['$http', '$scope
 angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', function($http, $scope){
   var sc = this;
 
-  sc.playlistNames = [];
-  sc.albumNames = [];
-  sc.artistNames = [];
+  // sc.playlistNames = [];
+  // sc.albumNames = [];
+  // sc.artistNames = [];
   sc.trackList = [];
-  sc.showBase = true;
-  sc.showPlaylistContainer = false;
-  sc.showAlbumContainer = false;
-  sc.showArtistContainer = false;
+  // sc.showBase = true;
+  // sc.showPlaylistContainer = false;
+  sc.showAlbumContainer = true;
+  // sc.showArtistContainer = false;
   sc.showTrackList = false;
   sc.trackNumber = 0;
   sc.playing = false;
 
-  sc.loader = function(){
-    return sc.playlistNames.length == 0;
-  };
-
-  sc.back = function(){
-    sc.showTrackList = false;
-    sc.showPlaylistContainer = true;
-  };
+  // sc.loader = function(){
+  //   return sc.playlistNames.length == 0;
+  // };
+  //
+  // sc.back = function(){
+  //   sc.showTrackList = false;
+  //   sc.showPlaylistContainer = true;
+  // };
 
   sc.cmd = function(cmd){
     console.log('spotify command:', cmd);
     socket.emit('spotify command', cmd);
   };
 
-  sc.selectPlaylist = function(index){
-    socket.emit('spotify select playlist', {index: index});
-    sc.showPlaylistContainer = false;
-    sc.showTrackList = true;
-  };
+  // sc.selectPlaylist = function(index){
+  //   socket.emit('spotify select playlist', {index: index});
+  //   sc.showPlaylistContainer = false;
+  //   sc.showTrackList = true;
+  // };
 
   sc.selectAlbum = function(index){
     socket.emit('spotify select album', {index: index});
@@ -139,43 +139,43 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
     sc.showTrackList = true;
   };
 
-  sc.select = function(str){
-    sc.showBase = false;
-    switch(str){
-      case 'playlists':
-        sc.showPlaylistContainer = true;
-        break;
-      case 'albums':
-        sc.showAlbumContainer = true;
-        break;
-      case 'artists':
-        sc.showArtistContainer = true;
-        break;
-    }
-  };
+  // sc.select = function(str){
+  //   sc.showBase = false;
+  //   switch(str){
+  //     case 'playlists':
+  //       sc.showPlaylistContainer = true;
+  //       break;
+  //     case 'albums':
+  //       sc.showAlbumContainer = true;
+  //       break;
+  //     case 'artists':
+  //       sc.showArtistContainer = true;
+  //       break;
+  //   }
+  // };
 
   socket.on('spotify status', function(data){
     console.log('spotify status', data);
     $scope.$apply(function(){
-      sc.playlistNames = data.playlistNames;
+      sc.albums = data.albums;
       sc.trackList = data.trackList;
       sc.trackNumber = data.trackNumber;
     });
   });
 
-  socket.on('spotify playlist', function(data){
-    console.log('spotify playlist', data);
-  });
+  // socket.on('spotify playlist', function(data){
+  //   console.log('spotify playlist', data);
+  // });
 
   socket.on('spotify albums', function(data){
-    console.log('spotify albums:', data);
     $scope.$apply(function(){
-      sc.albumNames = data.albumNames
+      sc.albums = data.albums
     });
+      console.log('spotify albums:', sc.albums);
   });
 
   sc.status = function(){
-    console.log('getting spotify status');
+    console.log('getting spotify status...');
     socket.emit('get spotify status');
   };
 
@@ -185,6 +185,23 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
 
   console.log('spotify controller loaded.');
 }]);
+
+angular.module('MagVoxApp').directive('mvAlbum', function(){
+  return {
+    restrict: 'E',
+    scope: {
+      album: '=album'
+    },
+    templateUrl: '/views/mv-album.html'
+  };
+});
+
+angular.module('MagVoxApp').directive('mvTrack', function(){
+  return {
+    restrict: 'E',
+    templateUrl: 'mv-track.html'
+  };
+});
 
 angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', function($http, $scope){
   var nc = this;

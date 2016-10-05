@@ -1,30 +1,20 @@
 <h2>Spotify</h2>
-<div>
-  <button class="spotify-back-btn" ng-show="!sc.showBase" ng-click="sc.back()">back</button>
-  <h3 ng-show="sc.showPlaylistContainer">Playlists</h3>
-  <h3 ng-show="sc.showTrackList">Tracks</h3>
-  <h3 ng-show="sc.showAlbumContainer">Albums</h3>
+
+<!-- filter text -->
+<div class="spotify-filter-container">
+  <input type="text" class="spotify-filter" placeholder="filter..." ng-model="sc.filterText" />
 </div>
-<div class="spotify-base-container" ng-show="sc.showBase">
-  <button class="twelve columns" ng-click="sc.select('playlist')">Playlists</button>
-  <button class="twelve columns" ng-click="sc.select('albums')">Albums</button>
-  <button class="twelve columns" ng-click="sc.select('artists')">Artists</button>
-</div>
-<div class="spotify-playlist-container twelve columns" ng-show="sc.showPlaylistContainer">
-  <div class="loader" ng-show="sc.loader()">
-    <span>loading</span><span id="dot1">.</span><span id="dot2">.</span><span id="dot3">.</span>
-  </div>
-  <button ng-repeat="playlistName in sc.playlistNames track by $index" class="spotify-playlist-btn twelve columns" ng-click="sc.selectPlaylist($index)">{{playlistName}}</button>
-</div>
+
+<!-- album cover -->
 <div class="spotify-album-container" ng-show="sc.showAlbumContainer">
-  <button ng-click="sc.selectAlbum($index)" ng-repeat="albumName in sc.albumNames track by $index">{{albumName}}</button>
+  <mv-album album="album" ng-repeat="album in sc.albums"></mv-album>
 </div>
-<div class="spotify-artist-container" ng-show="sc.showArtistContainer">
-  <button ng-repeat="artistName in sc.artistNames">{{artistName}}</button>
+<!-- {{sc.albums}} -->
+<!-- track list -->
+<div class="spotify-tracklist-container" ng-show="sc.showTrackList">
+  <mv-track ng-repeat="track in sc.tracks"></mv-track>
 </div>
-<div class="spotify-tracklist" ng-show="sc.showTrackList">
-  <button ng-repeat="track in sc.trackList track by $index" class="spotify-playlist-btn" ng-click="sc.cmd({cmd: 'select', track: $index})">{{track}}</button>
-</div>
+
 <button ng-click="sc.status()">status</button>
 <button ng-click="sc.cmd({cmd: 'play', track: 0})">play</button>
 <button ng-click="sc.cmd({cmd: 'next'})">next</button>

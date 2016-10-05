@@ -340,12 +340,16 @@ function getAlbums(){
       allAlbums = users[0].spotify_albums;
       status.albumNames = [];
 
-      allAlbums.map(function(album){
-        status.albumNames.push(album.album_name);
-      });
+      allAlbums = allAlbums.filter(function(album, index){
+        if (index < 10){
+          return true;
+        }  else {
+          return false;
+        }
+      })
 
       console.log('got spotify albums from db.');
-      spotifySocket.emit('spotify albums', {albumNames: status.albumNames, allAlbums: allAlbums});
+      spotifySocket.emit('spotify albums', {albums: allAlbums});
     }
   });
 }
