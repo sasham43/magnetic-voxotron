@@ -7,7 +7,7 @@
 
 <!-- album cover -->
 <div class="row spotify-album-container" ng-show="sc.showAlbumContainer">
-  <mv-album class="eight columns offset-by-two" album="album" ng-repeat="album in sc.albums"></mv-album>
+  <mv-album class="eight columns offset-by-two" album="album" ng-repeat="album in sc.albums | filter: {$: sc.filterText}" ng-click="sc.selectAlbum(album)"></mv-album>
 </div>
 <!-- {{sc.albums}} -->
 <!-- track list -->

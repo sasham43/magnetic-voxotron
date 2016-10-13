@@ -136,6 +136,10 @@ button{
   margin-bottom: 1em;
 }
 
+.spotify-filter{
+  font-size: 2em;
+}
+
 .loader{
   color: #ccc;
   font-size: 1.5em;

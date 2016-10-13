@@ -258,6 +258,7 @@ function updateAlbums(cb){
         });
         albums.push({
           album_name: album.name,
+          artist_name: album.artists[0].name,
           album_tracks:tracks,
           album_uri: album.uri,
           album_images: {big: album.images[0].url, med: album.images[1].url, sml: album.images[2].url}
@@ -340,13 +341,13 @@ function getAlbums(){
       allAlbums = users[0].spotify_albums;
       status.albumNames = [];
 
-      allAlbums = allAlbums.filter(function(album, index){
-        if (index < 10){
-          return true;
-        }  else {
-          return false;
-        }
-      })
+      // allAlbums = allAlbums.filter(function(album, index){
+      //   if (index < 10){
+      //     return true;
+      //   }  else {
+      //     return false;
+      //   }
+      // })
 
       console.log('got spotify albums from db.');
       spotifySocket.emit('spotify albums', {albums: allAlbums});
