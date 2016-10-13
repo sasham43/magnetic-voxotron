@@ -45,7 +45,7 @@ var ready = function(err){
       status.trackNumber++;
       if(status.trackNumber < tracks.length){
         console.log('next track:', tracks[status.trackNumber]);
-        var track = spotify.createFromLink(tracks[status.trackNumber].link);
+        var track = spotify.createFromLink(status.trackList[status.trackNumber].uri);
         player.play(track);
         status.playing = true;
         spotifySocket.emit('spotify status', status);
