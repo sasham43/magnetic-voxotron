@@ -135,8 +135,9 @@ module.exports = spotifyModule = {
   albumSelect: function(socket){
     spotifySocket = socket;
     socket.on('spotify select album', function(data){
-      console.log('spotify select album:', data);
-      album = allAlbums[data.index];
+      console.log('spotify select album:', data.index);
+      album = data.index;
+      status.trackList = [];
 
       tracks = album.album_tracks;
       tracks.map(function(track){
@@ -188,8 +189,6 @@ function spotifyPlayPause(){
     var track = spotify.createFromLink(tracks[status.trackNumber].link);
     player.play(track);
     status.playing = true;
-    // console.log('spotify control:', controls);
-    // controls.cancelOther('spotify');
   }
 }
 
@@ -198,7 +197,6 @@ function spotifyPlay(index){
   player.play(track);
   status.playing = true;
   status.trackNumber = index;
-  // console.log('spotify control:', this);
   controls.cancelOther('spotify');
 }
 
@@ -275,8 +273,6 @@ function updateAlbums(cb){
         pages++;
         request.get(options, getSpotifyAlbums);
       } else {
-        // status.albums = albums;
-        // spotifySocket.emit('spotify albums', {albums: albums});
         User.findOneAndUpdate({}, {spotify_albums:albums}, function(err, users){
           if(err){
             console.log('error saving spotify albums:', err);
@@ -291,7 +287,6 @@ function updateAlbums(cb){
       console.log('Error.', body.error);
       if(body.error.status == 401){
         // get refresh token and start again
-        // console.log('secret secrets:', process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_CLIENT_SECRET);
         var secret = process.env.SPOTIFY_CLIENT_SECRET;
         var id = process.env.SPOTIFY_CLIENT_ID;
         var buffer = Buffer(id + ':' + secret);
@@ -327,7 +322,6 @@ function updateAlbums(cb){
           })
         });
       }
-      // res.send(body);
     }
   };
   request.get(options, getSpotifyAlbums);
@@ -340,14 +334,6 @@ function getAlbums(){
     } else {
       allAlbums = users[0].spotify_albums;
       status.albumNames = [];
-
-      // allAlbums = allAlbums.filter(function(album, index){
-      //   if (index < 10){
-      //     return true;
-      //   }  else {
-      //     return false;
-      //   }
-      // })
 
       console.log('got spotify albums from db.');
       spotifySocket.emit('spotify albums', {albums: allAlbums});

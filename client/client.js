@@ -179,10 +179,6 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
     socket.emit('get spotify status');
   };
 
-  sc.selectAlbum = function(album){
-    console.log('spotify select album:', album);
-  };
-
   sc.status();
   // socket.emit('spotify update albums');
   socket.emit('spotify get albums');
@@ -203,7 +199,7 @@ angular.module('MagVoxApp').directive('mvAlbum', function(){
 angular.module('MagVoxApp').directive('mvTrack', function(){
   return {
     restrict: 'E',
-    templateUrl: 'mv-track.html'
+    templateUrl: '/views/mv-track.html'
   };
 });
 

@@ -12,7 +12,7 @@
 <!-- {{sc.albums}} -->
 <!-- track list -->
 <div class="spotify-tracklist-container" ng-show="sc.showTrackList">
-  <mv-track ng-repeat="track in sc.tracks"></mv-track>
+  <mv-track ng-repeat="track in sc.trackList track by $index"></mv-track>
 </div>
 
 <button ng-click="sc.status()">status</button>
