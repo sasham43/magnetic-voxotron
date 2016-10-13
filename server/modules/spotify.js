@@ -192,17 +192,17 @@ function spotifyPlayPause(){
   }
 }
 
-function spotifyPlay(index){
-  var track = spotify.createFromLink(tracks[index].link);
-  player.play(track);
+function spotifyPlay(track){
+  var link = spotify.createFromLink(track.uri);
+  player.play(link);
   status.playing = true;
-  status.trackNumber = index;
+  status.trackNumber = track.index - 1;
   controls.cancelOther('spotify');
 }
 
 function spotifyNext(){
   status.trackNumber++;
-  var track = spotify.createFromLink(tracks[status.trackNumber].link);
+  var track = spotify.createFromLink(status.trackList[status.trackNumber].uri);
   player.play(track);
   status.playing = true;
 }

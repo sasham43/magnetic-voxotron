@@ -122,9 +122,9 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
       console.log('spotify albums:', sc.albums);
   });
 
-  sc.cmd = function(cmd){
+  sc.cmd = function(cmd, track){
     console.log('spotify command:', cmd);
-    socket.emit('spotify command', cmd);
+    socket.emit('spotify command', {cmd: cmd, track: track});
   };
 
   sc.selectAlbum = function(index){
@@ -141,11 +141,6 @@ angular.module('MagVoxApp').controller('SpotifyController', ['$http', '$scope', 
   sc.status = function(){
     console.log('getting spotify status...');
     socket.emit('get spotify status');
-  };
-
-  sc.selectTrack = function(track, index){
-    console.log('you select this track:', track);
-    socket.emit('spotify select track', {track_name: track, index: index});
   };
 
   sc.status();
