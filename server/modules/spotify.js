@@ -141,7 +141,7 @@ module.exports = spotifyModule = {
 
       tracks = album.album_tracks;
       tracks.map(function(track){
-        status.trackList.push(track.track_name);
+        status.trackList.push(track);
       });
 
       socket.emit('spotify status', status);
