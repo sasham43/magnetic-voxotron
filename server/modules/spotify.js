@@ -195,6 +195,7 @@ function spotifyPlayPause(){
 function spotifyPlay(track){
   var link = spotify.createFromLink(track.uri);
   player.play(link);
+  console.log('player:', player, link);
   status.playing = true;
   status.trackNumber = track.index - 1;
   controls.cancelOther('spotify');
@@ -333,10 +334,11 @@ function getAlbums(){
       console.log('error getting spotify albums from db:', err);
     } else {
       allAlbums = users[0].spotify_albums;
-      status.albumNames = [];
+      status.albums = [];
+      status.albums = allAlbums;
 
       console.log('got spotify albums from db.');
-      spotifySocket.emit('spotify albums', {albums: allAlbums});
+      spotifySocket.emit('spotify status', status);
     }
   });
 }

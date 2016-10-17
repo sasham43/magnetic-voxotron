@@ -2,7 +2,7 @@
 
 <!-- filter text -->
 <div class="row spotify-filter-container">
-  <button ng-click="sc.back()">back</button>
+  <button ng-click="sc.back()" ng-show="sc.showTrackList">back</button>
   <input type="text" class="eight columns offset-by-two spotify-filter" placeholder="filter..." ng-model="sc.filterText" />
 </div>
 
