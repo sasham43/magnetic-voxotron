@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 var routes = require('./routes');
 var spotifyModule = require('./modules/spotify.js');
 var nprModule = require('./modules/npr.js');
+var cdModule = require('./modules/cd.js');
 
 // test
 // require('./modules/test.js')();
@@ -21,6 +22,8 @@ var app = express();
 var server = http.Server(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+
+console.log('start');
 
 io.on('connection', function(socket){
   socket.on('error', function(err){
@@ -37,6 +40,8 @@ io.on('connection', function(socket){
   spotifyModule.albumSelect(socket);
   spotifyModule.updateAlbums(socket);
   spotifyModule.getAlbums(socket);
+
+  cdModule.command(socket);
 });
 
 // express config

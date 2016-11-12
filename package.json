@@ -38,10 +38,12 @@
     "mplayer": "^2.1.0",
     "node-spotify": "^0.8.1",
     "npr-one-sdk": "^1.1.0",
+    "onoff": "^1.1.1",
     "passport": "^0.3.2",
     "passport-oauth": "^1.0.0",
     "passport-oauth2-refresh": "^1.0.0",
     "passport-spotify": "^0.3.0",
+    "pi-gpio": "0.0.8",
     "request": "^2.74.0",
     "skeleton-css": "^2.0.4",
     "socket.io": "^1.4.8"

@@ -217,6 +217,13 @@ angular.module('MagVoxApp').controller('NPRController', ['$http', '$scope', func
 }]);
 
 angular.module('MagVoxApp').controller('CDController', ['$http', function($http){
+  var cc = this;
+
+  cc.cmd = function(cmd){
+  console.log('cd command:', cmd);
+    socket.emit('cd command', {cmd:cmd});
+  };
+
   console.log('cd controller loaded.');
 }]);
 

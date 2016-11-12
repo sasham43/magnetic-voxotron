@@ -1,1 +1,17 @@
 <h2>CD Player</h2>
+<div class="row">
+      <div class="one-half columns play">
+        <button ng-click="cc.cmd('play')" class="u-full-width">PLAY</button>
+      </div>
+      <div class="one-half columns eject">
+        <button ng-click="cc.cmd('eject')" class="u-full-width">EJECT</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one-half columns prev">
+        <button ng-click="cc.cmd('prev')" class="u-full-width">PREV</button>
+      </div>
+      <div class="one-half columns next">
+        <button ng-click="cc.cmd('next')" class="u-full-width">NEXT</button>
+      </div>
+    </div>
