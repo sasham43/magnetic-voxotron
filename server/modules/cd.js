@@ -4,39 +4,39 @@ var cdSocket;
 var child;
 var trackNumber = 0;
 
-// var gpio = require('onoff').Gpio;
-// var buttonPlay = new gpio(17, 'in', 'both');
-// var buttonPrev = new gpio(27, 'in', 'both');
-// var buttonNext = new gpio(18, 'in', 'both');
-// var buttonEject = new gpio(23, 'in', 'both');
-//
-// buttonPlay.watch(function(err, value) {
-//   console.log('button play press:', value, err);
-//   if(value === 1){
-//     controls.play();
-//   }
-// });
-//
-// buttonPrev.watch(function(err, value) {
-//   console.log('button prev press:', value, err);
-//   if(value === 1){
-//     controls.prevTrack();
-//   }
-// });
-//
-// buttonNext.watch(function(err, value) {
-//   console.log('button next press:', value, err);
-//   if(value === 1){
-//     controls.nextTrack();
-//   }
-// });
-//
-// buttonEject.watch(function(err, value) {
-//   console.log('button eject press:', value, err);
-//   if(value === 1){
-//     controls.eject();
-//   }
-// });
+var gpio = require('onoff').Gpio;
+var buttonPlay = new gpio(17, 'in', 'both');
+var buttonPrev = new gpio(27, 'in', 'both');
+var buttonNext = new gpio(18, 'in', 'both');
+var buttonEject = new gpio(23, 'in', 'both');
+
+buttonPlay.watch(function(err, value) {
+  console.log('button play press:', value, err);
+  if(value === 1){
+    controls.play();
+  }
+});
+
+buttonPrev.watch(function(err, value) {
+  console.log('button prev press:', value, err);
+  if(value === 1){
+    controls.prevTrack();
+  }
+});
+
+buttonNext.watch(function(err, value) {
+  console.log('button next press:', value, err);
+  if(value === 1){
+    controls.nextTrack();
+  }
+});
+
+buttonEject.watch(function(err, value) {
+  console.log('button eject press:', value, err);
+  if(value === 1){
+    controls.eject();
+  }
+});
 
 
 var play = function(data){

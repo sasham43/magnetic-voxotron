@@ -9,7 +9,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var routes = require('./routes');
-var spotifyModule = require('./modules/spotify.js');
+// var spotifyModule = require('./modules/spotify.js');
 var nprModule = require('./modules/npr.js');
 var cdModule = require('./modules/cd.js');
 
@@ -34,12 +34,12 @@ io.on('connection', function(socket){
   nprModule.command(socket);
   nprModule.getRecommendations(socket);
 
-  spotifyModule.emitStatus(socket);
-  spotifyModule.command(socket);
-  spotifyModule.playlistSelect(socket);
-  spotifyModule.albumSelect(socket);
-  spotifyModule.updateAlbums(socket);
-  spotifyModule.getAlbums(socket);
+  // spotifyModule.emitStatus(socket);
+  // spotifyModule.command(socket);
+  // spotifyModule.playlistSelect(socket);
+  // spotifyModule.albumSelect(socket);
+  // spotifyModule.updateAlbums(socket);
+  // spotifyModule.getAlbums(socket);
 
   cdModule.command(socket);
 });
